@@ -9,8 +9,6 @@ namespace ColorPicker.Settings
     {
         SettingItem<bool> RunOnStartup { get; }
 
-        SettingItem<bool> AutomaticUpdates { get; }
-
         SettingItem<string> ActivationShortcut { get; }
 
         SettingItem<bool> ChangeCursor { get; }

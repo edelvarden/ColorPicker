@@ -17,7 +17,7 @@ namespace ColorPicker.ViewModels
         private bool _checkingForUpdateInProgress;
 
         [ImportingConstructor]
-        public SettingsViewModel(IUserSettings userSettings, AppUpdateManager appUpdateManager)
+        public SettingsViewModel(IUserSettings userSettings)
         {
             ChangeShortcutCommand = new RelayCommand(() =>
             {
@@ -103,19 +103,6 @@ namespace ColorPicker.ViewModels
             set
             {
                 _showingKeyboardCaptureOverlay = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool CheckingForUpdateInProgress
-        {
-            get
-            {
-                return _checkingForUpdateInProgress;
-            }
-            set
-            {
-                _checkingForUpdateInProgress = value;
                 OnPropertyChanged();
             }
         }

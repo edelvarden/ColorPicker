@@ -33,7 +33,6 @@ namespace ColorPicker.ViewModels
             ZoomWindowHelper zoomWindowHelper,
             AppStateHandler appStateHandler,
             KeyboardMonitor keyboardMonitor,
-            AppUpdateManager appUpdateManager,
             IUserSettings userSettings,
             IColorProvider colorProvider)
         {

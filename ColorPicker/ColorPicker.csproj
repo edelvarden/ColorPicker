@@ -120,7 +120,6 @@
     <Compile Include="Helpers\Logger.cs" />
     <Compile Include="Helpers\RegistryHelper.cs" />
     <Compile Include="Helpers\SettingsWindowHelper.cs" />
-    <Compile Include="Helpers\AppUpdateManager.cs" />
     <Compile Include="Helpers\ThrottledActionInvoker.cs" />
     <Compile Include="Helpers\WindowHelper.cs" />
     <Compile Include="Helpers\ZoomWindowHelper.cs" />

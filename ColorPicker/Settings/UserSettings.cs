@@ -19,7 +19,6 @@ namespace ColorPicker.Settings
             var settings = Properties.Settings.Default;
 
             RunOnStartup = new SettingItem<bool>(settings.RunOnStartup, (currentValue) => { settings.RunOnStartup = currentValue; SaveSettings(); });
-            AutomaticUpdates = new SettingItem<bool>(settings.AutomaticUpdates, (currentValue) => { settings.AutomaticUpdates = currentValue; SaveSettings(); });
             ActivationShortcut = new SettingItem<string>(settings.ActivationShortcut, (currentValue) => { settings.ActivationShortcut = currentValue; SaveSettings(); });
             ChangeCursor = new SettingItem<bool>(settings.ChangeCursorWhenPickingColor, (currentValue) => { settings.ChangeCursorWhenPickingColor = currentValue; SaveSettings(); });
             ShowColorName = new SettingItem<bool>(settings.ShowColorName, (currentValue) => { settings.ShowColorName = currentValue; SaveSettings(); });
@@ -28,8 +27,6 @@ namespace ColorPicker.Settings
         }
 
         public SettingItem<bool> RunOnStartup { get; }
-
-        public SettingItem<bool> AutomaticUpdates { get; }
 
         public SettingItem<string> ActivationShortcut { get; }
 
