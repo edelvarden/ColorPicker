@@ -1,4 +1,5 @@
 ﻿using ColorPicker.Helpers;
+using ColorPicker.Properties;
 using Microsoft.Xaml.Behaviors;
 using System;
 using System.Diagnostics;
@@ -25,7 +26,7 @@ namespace ColorPicker.Behaviors
         {
             _notifyIcon = new NotifyIcon
             {
-                Icon = new System.Drawing.Icon("Resources\\icon.ico"),
+                Icon = Resources.icon,
                 Text = "Color picker",
                 ContextMenu = new ContextMenu()
             };
