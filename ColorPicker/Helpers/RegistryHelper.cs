@@ -12,15 +12,16 @@ namespace ColorPicker.Helpers
         {
             try
             {
-                RegistryKey rk = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-
-                if (enabled)
+                using (RegistryKey rk = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true))
                 {
-                    rk.SetValue(AppName, Assembly.GetExecutingAssembly().Location);
-                }
-                else
-                {
-                    rk.DeleteValue(AppName, false);
+                    if (enabled)
+                    {
+                        rk.SetValue(AppName, Assembly.GetExecutingAssembly().Location);
+                    }
+                    else
+                    {
+                        rk.DeleteValue(AppName, false);
+                    }
                 }
             }
             catch (Exception ex)
