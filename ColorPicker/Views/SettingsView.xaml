@@ -29,7 +29,6 @@
     <Grid>
         <StackPanel Margin="40">
             <CheckBox Margin="5,0" IsChecked="{Binding RunOnStartup}" FontWeight="Light" Content="Run on startup"/>
-            <CheckBox Margin="5,0" IsChecked="{Binding ChangeCursorWhenPickingColor}" FontWeight="Light" Content="Change cursor when picking a color"/>
             <CheckBox Margin="5,0" IsChecked="{Binding ShowColorName}" FontWeight="Light" Content="Show color name"/>
 
             <Rectangle Height="1" Fill="DarkGray" Margin="5"/>

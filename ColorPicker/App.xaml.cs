@@ -26,7 +26,6 @@ namespace ColorPicker
             catch (Exception ex)
             {
                 Logger.LogError("Unhandled exception", ex);
-                CursorManager.RestoreOriginalCursors();
             }
         }
 
@@ -48,7 +47,6 @@ namespace ColorPicker
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             Logger.LogError("Unhandled exception", (e.ExceptionObject is Exception) ? (e.ExceptionObject as Exception) : new Exception());
-            CursorManager.RestoreOriginalCursors();
         }
     }
 }

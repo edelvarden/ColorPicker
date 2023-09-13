@@ -20,7 +20,6 @@ namespace ColorPicker.Settings
 
             RunOnStartup = new SettingItem<bool>(settings.RunOnStartup, (currentValue) => { settings.RunOnStartup = currentValue; SaveSettings(); });
             ActivationShortcut = new SettingItem<string>(settings.ActivationShortcut, (currentValue) => { settings.ActivationShortcut = currentValue; SaveSettings(); });
-            ChangeCursor = new SettingItem<bool>(settings.ChangeCursorWhenPickingColor, (currentValue) => { settings.ChangeCursorWhenPickingColor = currentValue; SaveSettings(); });
             ShowColorName = new SettingItem<bool>(settings.ShowColorName, (currentValue) => { settings.ShowColorName = currentValue; SaveSettings(); });
             SelectedColorFormat = new SettingItem<ColorFormat>((ColorFormat)Enum.Parse(typeof(ColorFormat), settings.SelectedColorFormat, true), (currentValue) => { settings.SelectedColorFormat = currentValue.ToString(); SaveSettings(); });
             LoadColorsHistory();

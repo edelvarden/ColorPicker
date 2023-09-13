@@ -93,7 +93,6 @@ namespace ColorPicker.ViewModels
             // show meter area only after we detected a movement
             if (_mouseDown && !_appStateHandler.IsMeterAreaShown)
             {
-                _mouseInfoProvider.SetOriginalCursor();
                 _appStateHandler.ShowMeterArea();
             }
             if (!_mouseDown && !_appStateHandler.IsMeterAreaShown)
@@ -106,7 +105,6 @@ namespace ColorPicker.ViewModels
 
         private void MouseInfoProvider_OnLeftMouseDown(object sender, System.Drawing.Point p)
         {
-            _mouseInfoProvider.SetOriginalCursor();
             _appStateHandler.HideColorPicker();
             _appStateHandler.HideMeterArea();
             _mouseDown = true;
