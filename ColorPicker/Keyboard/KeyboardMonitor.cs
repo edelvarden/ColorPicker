@@ -15,18 +15,16 @@ namespace ColorPicker.Keyboard
     {
         private readonly AppStateHandler _appStateHandler;
         private readonly IUserSettings _userSettings;
-        private readonly ColorsHistoryWindowHelper _colorsHistoryWindowHelper;
         private readonly ZoomWindowHelper _zoomWindowHelper;
         private List<int> _currentlyPressedKeys = new List<int>();
         private List<int> _activationKeys = new List<int>();
         private GlobalKeyboardHook _keyboardHook;
 
         [ImportingConstructor]
-        public KeyboardMonitor(AppStateHandler appStateHandler, IUserSettings userSettings, ColorsHistoryWindowHelper colorsHistoryWindowHelper, ZoomWindowHelper zoomWindowHelper)
+        public KeyboardMonitor(AppStateHandler appStateHandler, IUserSettings userSettings, ZoomWindowHelper zoomWindowHelper)
         {
             _appStateHandler = appStateHandler;
             _userSettings = userSettings;
-            _colorsHistoryWindowHelper = colorsHistoryWindowHelper;
             _zoomWindowHelper = zoomWindowHelper;
             _userSettings.ActivationShortcut.PropertyChanged += ActivationShortcut_PropertyChanged;
             SetActivationKeys();
@@ -89,7 +87,6 @@ namespace ColorPicker.Keyboard
 
             if(_currentlyPressedKeys.Count == 1 && _currentlyPressedKeys[0] == 27)
             {
-                _colorsHistoryWindowHelper.HideColorsHistory();
                 _zoomWindowHelper.CloseZoomWindow();
                 _appStateHandler.HideMeterArea();
                 _appStateHandler.HideColorPicker();

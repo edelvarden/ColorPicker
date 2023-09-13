@@ -14,9 +14,6 @@
     <Setting Name="SelectedColorFormat" Type="System.String" Scope="User">
       <Value Profile="(Default)">HEX</Value>
     </Setting>
-    <Setting Name="ColorsHistory" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
     <Setting Name="ShowColorName" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>

@@ -16,9 +16,5 @@ namespace ColorPicker.Settings
         SettingItem<bool> ShowColorName { get; }
 
         SettingItem<ColorFormat> SelectedColorFormat { get; }
-
-        List<Color> ColorsHistory { get; }
-
-        void AddColorIntoHistory(Color color);
     }
 }

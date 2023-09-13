@@ -115,7 +115,6 @@ namespace ColorPicker.ViewModels
             if (ColorString != null)
             {
                 ClipboardHelper.CopyIntoClipboard(ColorString);
-                _userSettings.AddColorIntoHistory(_currentColor);
             }
 
             _mouseDown = false;
