@@ -14,7 +14,6 @@ namespace ColorPicker.ViewModels
         private readonly IUserSettings _userSettings;
         private bool _showingKeyboardCaptureOverlay = false;
         private string _shortcutPreview;
-        private bool _checkingForUpdateInProgress;
 
         [ImportingConstructor]
         public SettingsViewModel(IUserSettings userSettings)

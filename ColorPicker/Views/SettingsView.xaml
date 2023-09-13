@@ -9,7 +9,7 @@
              xmlns:behaviors="clr-namespace:ColorPicker.Behaviors"
              xmlns:System="clr-namespace:System;assembly=mscorlib"
              xmlns:ColorPickerSettings="clr-namespace:ColorPicker.Settings"
-             d:DesignHeight="450" d:DesignWidth="800" Background="{DynamicResource AppBackgroundBrush}" Width="310">
+             d:DesignHeight="450" d:DesignWidth="800" Background="White" Width="310">
     <UserControl.Resources>
         <Style TargetType="{x:Type TextBlock}" x:Key="NormalTextBlock">
             <Style.Setters>
@@ -39,7 +39,7 @@
             </WrapPanel>
 
             <Rectangle Height="1" Fill="DarkGray" Margin="5"/>
-            <StackPanel>
+            <StackPanel >
                 <TextBlock Style="{StaticResource NormalTextBlock}" Margin="7" FontWeight="Light" Text="Open color picker shortcut:"/>
                 <TextBlock Style="{StaticResource NormalTextBlock}" Margin="7" Text="{Binding ShortCut}"/>
             </StackPanel>
@@ -47,7 +47,7 @@
 
         </StackPanel>
 
-        <Border Background="{DynamicResource SystemControlBackgroundAltHighBrush}" Visibility="{Binding ShowingKeyboardCaptureOverlay, Converter={StaticResource bool2VisibilityConverter}}">
+        <Border Background="White" Visibility="{Binding ShowingKeyboardCaptureOverlay, Converter={StaticResource bool2VisibilityConverter}}">
             <StackPanel VerticalAlignment="Center">
                 <TextBlock Style="{StaticResource NormalTextBlock}" Text="Press keys" FontSize="15" FontWeight="Light" Margin="0,0" HorizontalAlignment="Center"/>
                 <TextBlock Style="{StaticResource NormalTextBlock}" Text="{Binding ShortCutPreview}" FontSize="16" FontWeight="Bold" Margin="0,15" HorizontalAlignment="Center"/>
