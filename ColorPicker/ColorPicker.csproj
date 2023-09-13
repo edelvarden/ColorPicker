@@ -94,7 +94,6 @@
     <Compile Include="Behaviors\ChangeWindowPositionBehavior.cs" />
     <Compile Include="Behaviors\CloseZoomWindowBehavior.cs" />
     <Compile Include="Behaviors\GridEffectBehavior.cs" />
-    <Compile Include="Behaviors\HyperlinkBehavior.cs" />
     <Compile Include="Behaviors\MoveWindowBehavior.cs" />
     <Compile Include="Behaviors\NotifyIconBehavior.cs" />
     <Compile Include="Behaviors\ResizeBehavior.cs" />
