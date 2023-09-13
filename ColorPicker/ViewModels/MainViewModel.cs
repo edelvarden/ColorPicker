@@ -50,26 +50,6 @@ namespace ColorPicker.ViewModels
             mouseInfoProvider.OnMouseWheel += MouseInfoProvider_OnMouseWheel;
 
             keyboardMonitor.Start();
-
-#if !DEBUG
-            CheckForUpdates(appUpdateManager, userSettings);
-#endif
-        }
-
-        private static void CheckForUpdates(AppUpdateManager appUpdateManager, IUserSettings userSettings)
-        {
-            if (userSettings.AutomaticUpdates.Value)
-            {
-                Task.Run(async () =>
-                {
-                    // do not start it immediately after the app start
-                    await Task.Delay(TimeSpan.FromSeconds(5));
-                    if (await appUpdateManager.IsNewUpdateAvailable())
-                    {
-                        await appUpdateManager.Update();
-                    }
-                });
-            }
         }
 
         public string ColorString

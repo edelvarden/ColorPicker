@@ -14,11 +14,10 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <Border Grid.RowSpan="2" Grid.ColumnSpan="2" Grid.Column="1" Background="{DynamicResource SystemControlBackgroundAltHighBrush}" BorderThickness="1" BorderBrush="#505050" />
-            <Border Background="{Binding DisplayedColorBrush}" BorderBrush="Black" Grid.Column="1" BorderThickness="1" Grid.RowSpan="2" x:Name="ColorBorder"/>
-            <TextBlock Margin="7,5,7,5" VerticalAlignment="Center" Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}" Grid.Row="0" Grid.Column="2" Text="{Binding ColorString}"/>
+            <Border CornerRadius="4" Grid.RowSpan="2" Grid.ColumnSpan="2" Grid.Column="1" Background="#e5e5e5" BorderThickness="1" />
+            <Border x:Name="ColorBorder" Background="{Binding DisplayedColorBrush}" BorderBrush="White" Grid.Column="1" BorderThickness="1" Grid.RowSpan="2"/>
+            <TextBlock Margin="7,5,7,5" VerticalAlignment="Center" Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}" Grid.Row="0" Grid.Column="2" Text="{Binding ColorString}" FontSize="16" FontWeight="Medium"/>
 
-            <Border BorderBrush="#505050" Grid.Column="2" Margin="0,1,1,1" Grid.RowSpan="2" BorderThickness="3,0,3,0" /> 
         </Grid>
     </Grid>
 </UserControl>

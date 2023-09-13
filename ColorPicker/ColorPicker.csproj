@@ -257,14 +257,6 @@
     <PackageReference Include="ModernWpfUI">
       <Version>0.9.6</Version>
     </PackageReference>
-    <PackageReference Include="NuGet.CommandLine">
-      <Version>5.11.3</Version>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="squirrel.windows">
-      <Version>1.9.1</Version>
-    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\colorPicker.cur">

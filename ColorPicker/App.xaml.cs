@@ -1,6 +1,5 @@
 ﻿using ColorPicker.Helpers;
 using ColorPicker.Mouse;
-using Squirrel;
 using System;
 using System.Threading;
 using System.Windows;
@@ -41,17 +40,6 @@ namespace ColorPicker
                 _instanceMutex = null;
                 Application.Current.Shutdown();
                 return;
-            }
-
-            using (var mgr = new UpdateManager(""))
-            {
-                // Note, in most of these scenarios, the app exits after this method
-                // completes!
-                SquirrelAwareApp.HandleEvents(
-                  onInitialInstall: v => mgr.CreateShortcutForThisExe(),
-                  onAppUpdate: v => mgr.CreateShortcutForThisExe(),
-                  onAppUninstall: v => mgr.RemoveShortcutForThisExe(),
-                  onFirstRun: () => ShowWelcome());
             }
 
             base.OnStartup(e);

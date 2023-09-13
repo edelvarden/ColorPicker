@@ -7,8 +7,6 @@ namespace ColorPicker.ViewModelContracts
     {
         bool RunOnStartup { get; set; }
 
-        bool AutomaticUpdates { get; set; }
-
         bool ShowingKeyboardCaptureOverlay { get; set; }
 
         bool ChangeCursorWhenPickingColor { get; set; }
@@ -23,11 +21,7 @@ namespace ColorPicker.ViewModelContracts
 
         ColorFormat SelectedColorFormat { get; }
 
-        bool CheckingForUpdateInProgress { get; }
-
         ICommand ChangeShortcutCommand { get; }
-
-        ICommand CheckForUpdatesCommand { get; }
 
         ICommand ConfirmShortcutCommand { get; }
 

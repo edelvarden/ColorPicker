@@ -35,17 +35,6 @@ namespace ColorPicker.ViewModels
                 ShowingKeyboardCaptureOverlay = false;
             });
 
-            CheckForUpdatesCommand = new RelayCommand(async () =>
-            {
-                CheckingForUpdateInProgress = true;
-                if (await appUpdateManager.IsNewUpdateAvailable())
-                {
-                    await appUpdateManager.Update();
-                }
-
-                CheckingForUpdateInProgress = false;
-            });
-
             _userSettings = userSettings;
             _userSettings.ActivationShortcut.PropertyChanged += (s, e) => { OnPropertyChanged(nameof(ShortCut)); };
         }
@@ -105,19 +94,6 @@ namespace ColorPicker.ViewModels
             }
         }
 
-        public bool AutomaticUpdates
-        {
-            get
-            {
-                return _userSettings.AutomaticUpdates.Value;
-            }
-            set
-            {
-                _userSettings.AutomaticUpdates.Value = value;
-                OnPropertyChanged();
-            }
-        }
-
         public bool ShowingKeyboardCaptureOverlay
         {
             get
@@ -173,8 +149,6 @@ namespace ColorPicker.ViewModels
         public string ApplicationVersion { get { return Assembly.GetExecutingAssembly().GetName().Version.ToString(); } }
 
         public ICommand ChangeShortcutCommand { get; }
-
-        public ICommand CheckForUpdatesCommand { get; }
 
         public ICommand ConfirmShortcutCommand { get; }
 
