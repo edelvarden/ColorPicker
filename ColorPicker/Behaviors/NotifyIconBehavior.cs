@@ -1,6 +1,7 @@
 ﻿using ColorPicker.Helpers;
 using Microsoft.Xaml.Behaviors;
 using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Forms;
 
@@ -43,7 +44,11 @@ namespace ColorPicker.Behaviors
 
         private void onCloseClick(object sender, EventArgs e)
         {
-            System.Windows.Application.Current.Shutdown();
+            // fix icon hiding that remains in the tray
+            _notifyIcon.Visible = false;
+
+            Process.GetCurrentProcess().Kill();
+ 
         }
 
         private void OnSettingsClick(object sender, EventArgs e)

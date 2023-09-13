@@ -45,19 +45,6 @@ namespace ColorPicker
             base.OnStartup(e);
         }
 
-        private void ShowWelcome()
-        {
-            var welcomeWindow = new WelcomeWindow();
-            welcomeWindow.Show();
-        }
-
-        protected override void OnExit(ExitEventArgs e)
-        {
-            if (_instanceMutex != null)
-                _instanceMutex.ReleaseMutex();
-            base.OnExit(e);
-        }
-
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             Logger.LogError("Unhandled exception", (e.ExceptionObject is Exception) ? (e.ExceptionObject as Exception) : new Exception());

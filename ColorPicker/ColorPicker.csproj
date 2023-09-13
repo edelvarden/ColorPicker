@@ -159,9 +159,6 @@
     <Compile Include="Views\ZoomView.xaml.cs">
       <DependentUpon>ZoomView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WelcomeWindow.xaml.cs">
-      <DependentUpon>WelcomeWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Win32Apis.cs" />
     <Compile Include="ZoomWindow.xaml.cs">
       <DependentUpon>ZoomWindow.xaml</DependentUpon>
@@ -207,10 +204,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ZoomView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="WelcomeWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
