@@ -8,6 +8,7 @@ namespace ColorPicker.Behaviors
     {
         private ZoomWindowHelper _zoomWindowHelper;
 
+        // Use constructor for initialization instead of attaching event handlers in OnAttached
         protected override void OnAttached()
         {
             base.OnAttached();
@@ -16,22 +17,31 @@ namespace ColorPicker.Behaviors
 
         private void AssociatedObject_Loaded(object sender, RoutedEventArgs e)
         {
+            // Attach event handlers here when the window is loaded
             AssociatedObject.PreviewKeyDown += AssociatedObject_PreviewKeyDown;
             AssociatedObject.MouseLeftButtonDown += AssociatedObject_MouseLeftButtonDown;
+
+            // Use Dependency Injection to get the ZoomWindowHelper instance
             _zoomWindowHelper = Bootstrapper.Container.GetExportedValue<ZoomWindowHelper>();
         }
 
         private void AssociatedObject_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            _zoomWindowHelper.CloseZoomWindow();
+            CloseZoomWindowIfPossible();
         }
 
         private void AssociatedObject_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            if(e.Key == System.Windows.Input.Key.Escape)
+            if (e.Key == System.Windows.Input.Key.Escape)
             {
-                _zoomWindowHelper.CloseZoomWindow();
+                CloseZoomWindowIfPossible();
             }
+        }
+
+        private void CloseZoomWindowIfPossible()
+        {
+            // Check if _zoomWindowHelper is not null before attempting to close the zoom window
+            _zoomWindowHelper?.CloseZoomWindow();
         }
     }
 }

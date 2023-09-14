@@ -5,30 +5,29 @@ namespace ColorPicker.Common
 {
     public class RelayCommand : ICommand
     {
-        private Predicate<object> _canExecute;
-        private Action<object> _execute;
+        private readonly Predicate<object> _canExecute;
+        private readonly Action<object> _execute;
 
         public RelayCommand(Action execute)
+            : this(_ => true, _ => execute.Invoke())
         {
-            _canExecute = x => true;
-            _execute = x => { execute.Invoke(); };
         }
 
-        public RelayCommand(Action<object> execute) : this(x => true, execute)
+        public RelayCommand(Action<object> execute)
+            : this(_ => true, execute)
         {
-
         }
 
         public RelayCommand(Predicate<object> canExecute, Action<object> execute)
         {
-            _canExecute = canExecute;
-            _execute = execute;
+            _canExecute = canExecute ?? throw new ArgumentNullException(nameof(canExecute));
+            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
         }
 
         public event EventHandler CanExecuteChanged
         {
-            add { CommandManager.RequerySuggested += value; }
-            remove { CommandManager.RequerySuggested -= value; }
+            add => CommandManager.RequerySuggested += value;
+            remove => CommandManager.RequerySuggested -= value;
         }
 
         public void RaiseCanExecuteChanged() => CommandManager.InvalidateRequerySuggested();

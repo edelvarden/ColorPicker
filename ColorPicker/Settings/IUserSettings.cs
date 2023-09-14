@@ -9,8 +9,6 @@ namespace ColorPicker.Settings
     {
         SettingItem<bool> RunOnStartup { get; }
 
-        SettingItem<bool> AutomaticUpdates { get; }
-
         SettingItem<string> ActivationShortcut { get; }
 
         SettingItem<bool> ChangeCursor { get; }
@@ -18,9 +16,5 @@ namespace ColorPicker.Settings
         SettingItem<bool> ShowColorName { get; }
 
         SettingItem<ColorFormat> SelectedColorFormat { get; }
-
-        List<Color> ColorsHistory { get; }
-
-        void AddColorIntoHistory(Color color);
     }
 }

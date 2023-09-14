@@ -8,20 +8,11 @@
     <Setting Name="UpdateSettings" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="AutomaticUpdates" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
     <Setting Name="ActivationShortcut" Type="System.String" Scope="User">
-      <Value Profile="(Default)">LeftCtrl + Cancel</Value>
-    </Setting>
-    <Setting Name="ChangeCursorWhenPickingColor" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+      <Value Profile="(Default)">LWin + C</Value>
     </Setting>
     <Setting Name="SelectedColorFormat" Type="System.String" Scope="User">
       <Value Profile="(Default)">HEX</Value>
-    </Setting>
-    <Setting Name="ColorsHistory" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="ShowColorName" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>

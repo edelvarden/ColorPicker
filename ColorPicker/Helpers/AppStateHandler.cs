@@ -16,18 +16,10 @@ namespace ColorPicker.Helpers
     [Export(typeof(AppStateHandler))]
     public class AppStateHandler
     {
-        private readonly ColorsHistoryWindowHelper _colorsHistoryWindowHelper;
         private readonly List<WindowType> _currentlyShownApps = new List<WindowType>();
 
         private MeterAreaWindow _meter;
         private bool _meterAreaShown;
-        
-        [ImportingConstructor]
-        public AppStateHandler(ColorsHistoryWindowHelper colorsHistoryWindowHelper) 
-        {
-            Application.Current.MainWindow.Closed += MainWindow_Closed;
-            _colorsHistoryWindowHelper = colorsHistoryWindowHelper;
-        }
 
         public event EventHandler<WindowType> AppShown;
 
@@ -93,7 +85,6 @@ namespace ColorPicker.Helpers
         public void ShowColorHistory()
         {
             HideColorPicker();
-            _colorsHistoryWindowHelper.ShowColorsHistory();
         }
 
         public void SetTopMost()

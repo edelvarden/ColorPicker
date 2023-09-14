@@ -65,14 +65,6 @@ namespace ColorPicker.Mouse
             }
         }
 
-        public void SetOriginalCursor()
-        {
-            if (_userSettings.ChangeCursor.Value)
-            {
-                CursorManager.RestoreOriginalCursors();
-            }
-        }
-
         private void Timer_Tick(object sender, EventArgs e)
         {
             UpdateMouseInfo();
@@ -123,11 +115,6 @@ namespace ColorPicker.Mouse
                 _mouseHook.OnMouseWheel += MouseHook_OnMouseWheel;
                 _eventsSubscribed = true;
             }
-
-            if (_userSettings.ChangeCursor.Value && e != WindowType.ColorMeter)
-            {
-                CursorManager.SetColorPickerCursor();
-            }
         }
 
         private void MouseHook_OnLeftMouseUp(object sender, Point p)
@@ -177,11 +164,6 @@ namespace ColorPicker.Mouse
             _mouseHook.OnMouseWheel -= MouseHook_OnMouseWheel;
 
             _eventsSubscribed = false;
-
-            if (_userSettings.ChangeCursor.Value)
-            {
-                CursorManager.RestoreOriginalCursors();
-            }
         }
     }
 }

@@ -21,7 +21,5 @@ namespace ColorPicker.Mouse
         System.Windows.Point CurrentPosition { get; }
 
         void StopMonitoring();
-
-        void SetOriginalCursor();
     }
 }

@@ -1,6 +1,5 @@
 ﻿using ColorPicker.Helpers;
 using ColorPicker.Mouse;
-using Squirrel;
 using System;
 using System.Threading;
 using System.Windows;
@@ -27,7 +26,6 @@ namespace ColorPicker
             catch (Exception ex)
             {
                 Logger.LogError("Unhandled exception", ex);
-                CursorManager.RestoreOriginalCursors();
             }
         }
 
@@ -43,37 +41,12 @@ namespace ColorPicker
                 return;
             }
 
-            using (var mgr = new UpdateManager(""))
-            {
-                // Note, in most of these scenarios, the app exits after this method
-                // completes!
-                SquirrelAwareApp.HandleEvents(
-                  onInitialInstall: v => mgr.CreateShortcutForThisExe(),
-                  onAppUpdate: v => mgr.CreateShortcutForThisExe(),
-                  onAppUninstall: v => mgr.RemoveShortcutForThisExe(),
-                  onFirstRun: () => ShowWelcome());
-            }
-
             base.OnStartup(e);
-        }
-
-        private void ShowWelcome()
-        {
-            var welcomeWindow = new WelcomeWindow();
-            welcomeWindow.Show();
-        }
-
-        protected override void OnExit(ExitEventArgs e)
-        {
-            if (_instanceMutex != null)
-                _instanceMutex.ReleaseMutex();
-            base.OnExit(e);
         }
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             Logger.LogError("Unhandled exception", (e.ExceptionObject is Exception) ? (e.ExceptionObject as Exception) : new Exception());
-            CursorManager.RestoreOriginalCursors();
         }
     }
 }

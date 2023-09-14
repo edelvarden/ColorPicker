@@ -1,30 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
-using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Forms;
 
 namespace ColorPicker.Helpers
 {
     public static class Logger
     {
         public static string ApplicationLogPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ColorPicker");
-
-        static Logger()
-        {
-            if (!Directory.Exists(ApplicationLogPath))
-            {
-                Directory.CreateDirectory(ApplicationLogPath);
-            }
-
-            var logFilePath = Path.Combine(ApplicationLogPath, "Log_" + DateTime.Now.ToString(@"yyyy-MM-dd") + ".txt");
-
-            Trace.Listeners.Add(new TextWriterTraceListener(logFilePath));
-
-            Trace.AutoFlush = true;
-        }
 
         public static void LogError(string message)
         {
@@ -33,13 +19,7 @@ namespace ColorPicker.Helpers
 
         public static void LogError(string message, Exception ex)
         {
-            Log(message + Environment.NewLine +
-                ex.Message + Environment.NewLine +
-                "Inner exception: " + Environment.NewLine +
-                ex.InnerException?.Message + Environment.NewLine +
-                "Stack trace: " + Environment.NewLine +
-                ex.StackTrace,
-                "ERROR");
+            Log($"{message}\n{ex.Message}\nInner exception:\n{ex.InnerException?.Message}\nStack trace:\n{ex.StackTrace}", "ERROR");
         }
 
         public static void LogWarning(string message)
@@ -52,22 +32,16 @@ namespace ColorPicker.Helpers
             Log(message, "INFO");
         }
 
-        private static void Log(string message, string type)
+        private static void Log(string message, string type, [CallerMemberName] string caller = "")
         {
-            Trace.WriteLine(type + ": " + DateTime.Now.TimeOfDay);
-            Trace.Indent();
-            Trace.WriteLine(GetCallerInfo());
-            Trace.WriteLine(message);
-            Trace.Unindent();
-        }
+            var info = $"{caller}\n\n{message}\nDo you want to copy the error message?";
+            var title = $"{type}: {DateTime.Now.TimeOfDay}";
+            var result = System.Windows.MessageBox.Show(info, title, (MessageBoxButton)MessageBoxButtons.YesNo, (MessageBoxImage)MessageBoxIcon.Error);
 
-        private static string GetCallerInfo()
-        {
-            StackTrace stackTrace = new StackTrace();
-
-            var methodName = stackTrace.GetFrame(3)?.GetMethod();
-            var className = methodName?.DeclaringType.Name;
-            return "[Method]: " + methodName.Name + " [Class]: " + className;
+            if (result == MessageBoxResult.Yes)
+            {
+                System.Windows.Clipboard.SetText(message);
+            }
         }
     }
 }
