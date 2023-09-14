@@ -1,9 +1,11 @@
-﻿using System;
+﻿using ColorPicker.Views;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Forms;
 
 namespace ColorPicker.Helpers
@@ -34,9 +36,25 @@ namespace ColorPicker.Helpers
 
         private static void Log(string message, string type, [CallerMemberName] string caller = "")
         {
-            var info = $"{caller}\n\n{message}\nDo you want to copy the error message?";
-            var title = $"{type}: {DateTime.Now.TimeOfDay}";
-            var result = System.Windows.MessageBox.Show(info, title, (MessageBoxButton)MessageBoxButtons.YesNo, (MessageBoxImage)MessageBoxIcon.Error);
+            var info = $"{message.Substring(0, 255)}...\n\nDo you want to copy the error message?";
+            var title = $"{type}: {caller}";
+            var icon = (MessageBoxImage)MessageBoxIcon.Information;
+            switch (type)
+            {
+                case "ERROR":
+                    icon = (MessageBoxImage)MessageBoxIcon.Error;
+                    break;                
+                case "INFO":
+                    icon = (MessageBoxImage)MessageBoxIcon.Information;
+                    break;            
+                case "WARNING":
+                    icon = (MessageBoxImage)MessageBoxIcon.Warning;
+                    break;
+                default:
+                    break;
+            }
+
+            var result = System.Windows.MessageBox.Show(info, title, (MessageBoxButton)MessageBoxButtons.YesNo, icon);
 
             if (result == MessageBoxResult.Yes)
             {
