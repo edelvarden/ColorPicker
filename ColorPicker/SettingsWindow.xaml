@@ -9,4 +9,7 @@
         Background="{DynamicResource SystemControlPageBackgroundAltHighBrush}"
         Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
         ShowInTaskbar="False" WindowStartupLocation="CenterScreen" Topmost="True" WindowStyle="SingleBorderWindow" Width="312" Height="380">
+    <Window.Icon>
+        <BitmapImage UriSource="/Resources/icon.ico"/>
+    </Window.Icon>
 </Window>
