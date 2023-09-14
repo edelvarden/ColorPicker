@@ -40,7 +40,8 @@
     <StartupObject>ColorPicker.App</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Resources\icon.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
@@ -246,11 +247,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\icon.ico">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
+    <Resource Include="Resources\icon.ico" />
     <Content Include="Shaders\GridShader.fx" />
   </ItemGroup>
   <ItemGroup>
