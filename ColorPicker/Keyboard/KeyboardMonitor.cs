@@ -4,8 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace ColorPicker.Keyboard
@@ -16,8 +14,8 @@ namespace ColorPicker.Keyboard
         private readonly AppStateHandler _appStateHandler;
         private readonly IUserSettings _userSettings;
         private readonly ZoomWindowHelper _zoomWindowHelper;
-        private List<int> _currentlyPressedKeys = new List<int>();
-        private List<int> _activationKeys = new List<int>();
+        private HashSet<int> _currentlyPressedKeys = new HashSet<int>();
+        private SortedSet<int> _activationKeys = new SortedSet<int>();
         private GlobalKeyboardHook _keyboardHook;
 
         [ImportingConstructor]
@@ -50,8 +48,6 @@ namespace ColorPicker.Keyboard
                         _activationKeys.Add(KeyInterop.VirtualKeyFromKey(parsedKey));
                     }
                 }
-
-                _activationKeys.Sort();
             }
         }
 
@@ -63,51 +59,27 @@ namespace ColorPicker.Keyboard
         private void Hook_KeyboardPressed(object sender, GlobalKeyboardHookEventArgs e)
         {
             var virtualCode = e.KeyboardData.VirtualCode;
+
             if (e.KeyboardState == GlobalKeyboardHook.KeyboardState.KeyDown || e.KeyboardState == GlobalKeyboardHook.KeyboardState.SysKeyDown)
             {
-                if (!_currentlyPressedKeys.Contains(virtualCode))
-                {
-                    _currentlyPressedKeys.Add(virtualCode);
-                }
+                _currentlyPressedKeys.Add(virtualCode);
             }
             else if (e.KeyboardState == GlobalKeyboardHook.KeyboardState.KeyUp || e.KeyboardState == GlobalKeyboardHook.KeyboardState.SysKeyUp)
             {
-                if (_currentlyPressedKeys.Contains(virtualCode))
-                {
-                    _currentlyPressedKeys.Remove(virtualCode);
-                }
+                _currentlyPressedKeys.Remove(virtualCode);
             }
 
-            _currentlyPressedKeys.Sort();
-
-            if(ArraysAreSame(_currentlyPressedKeys, _activationKeys))
+            if (_currentlyPressedKeys.SetEquals(_activationKeys))
             {
                 _appStateHandler.ShowColorPicker();
             }
 
-            if(_currentlyPressedKeys.Count == 1 && _currentlyPressedKeys[0] == 27)
+            if (_currentlyPressedKeys.Count == 1 && _currentlyPressedKeys.Contains(27))
             {
                 _zoomWindowHelper.CloseZoomWindow();
                 _appStateHandler.HideMeterArea();
                 _appStateHandler.HideColorPicker();
             }
-        }
-
-        private bool ArraysAreSame(List<int> first, List<int> second)
-        {
-            if(first.Count != second.Count)
-            {
-                return false;
-            }
-
-            for(int i=0; i< first.Count; i++)
-            {
-                if(first[i] != second[i])
-                {
-                    return false;
-                }
-            }
-            return true;
         }
     }
 }

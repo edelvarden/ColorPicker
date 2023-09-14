@@ -122,7 +122,6 @@
     <Compile Include="MeterAreaWindow.xaml.cs">
       <DependentUpon>MeterAreaWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Mouse\CursorManager.cs" />
     <Compile Include="Helpers\AppStateHandler.cs" />
     <Compile Include="Helpers\MonitorResolutionHelper.cs" />
     <Compile Include="Mouse\MouseHook.cs" />

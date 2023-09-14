@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
-using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
 
@@ -22,13 +19,7 @@ namespace ColorPicker.Helpers
 
         public static void LogError(string message, Exception ex)
         {
-            Log(message + Environment.NewLine +
-                ex.Message + Environment.NewLine +
-                "Inner exception: " + Environment.NewLine +
-                ex.InnerException?.Message + Environment.NewLine +
-                "Stack trace: " + Environment.NewLine +
-                ex.StackTrace,
-                "ERROR");
+            Log($"{message}\n{ex.Message}\nInner exception:\n{ex.InnerException?.Message}\nStack trace:\n{ex.StackTrace}", "ERROR");
         }
 
         public static void LogWarning(string message)
@@ -41,9 +32,9 @@ namespace ColorPicker.Helpers
             Log(message, "INFO");
         }
 
-        private static void Log(string message, string type)
+        private static void Log(string message, string type, [CallerMemberName] string caller = "")
         {
-            var info = $"{GetCallerInfo()}\n\n{message}\nDo you want copy error message?";
+            var info = $"{caller}\n\n{message}\nDo you want to copy the error message?";
             var title = $"{type}: {DateTime.Now.TimeOfDay}";
             var result = System.Windows.MessageBox.Show(info, title, (MessageBoxButton)MessageBoxButtons.YesNo, (MessageBoxImage)MessageBoxIcon.Error);
 
@@ -51,16 +42,6 @@ namespace ColorPicker.Helpers
             {
                 System.Windows.Clipboard.SetText(message);
             }
-        }
-
-
-        private static string GetCallerInfo()
-        {
-            StackTrace stackTrace = new StackTrace();
-
-            var methodName = stackTrace.GetFrame(3)?.GetMethod();
-            var className = methodName?.DeclaringType.Name;
-            return "[Method]: " + methodName.Name + " [Class]: " + className;
         }
     }
 }

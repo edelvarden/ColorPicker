@@ -16,7 +16,7 @@ namespace ColorPicker.Keyboard
         {
             _windowsHookHandle = IntPtr.Zero;
             _user32LibraryHandle = IntPtr.Zero;
-            _hookProc = LowLevelKeyboardProc; // we must keep alive _hookProc, because GC is not aware about SetWindowsHookEx behaviour.
+            _hookProc = LowLevelKeyboardProc;
 
             _user32LibraryHandle = LoadLibrary("User32");
             if (_user32LibraryHandle == IntPtr.Zero)
@@ -35,11 +35,16 @@ namespace ColorPicker.Keyboard
 
         internal event EventHandler<GlobalKeyboardHookEventArgs> KeyboardPressed;
 
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
         protected virtual void Dispose(bool disposing)
         {
             if (disposing)
             {
-                // because we can unhook only in the same thread, not in garbage collector thread
                 if (_windowsHookHandle != IntPtr.Zero)
                 {
                     if (!UnhookWindowsHookEx(_windowsHookHandle))
@@ -48,7 +53,6 @@ namespace ColorPicker.Keyboard
                         throw new Win32Exception(errorCode, $"Failed to remove keyboard hooks for '{Process.GetCurrentProcess().ProcessName}'. Error {errorCode}: {new Win32Exception(Marshal.GetLastWin32Error()).Message}.");
                     }
                     _windowsHookHandle = IntPtr.Zero;
-
                     // ReSharper disable once DelegateSubtraction
                     _hookProc -= LowLevelKeyboardProc;
                 }
@@ -56,7 +60,7 @@ namespace ColorPicker.Keyboard
 
             if (_user32LibraryHandle != IntPtr.Zero)
             {
-                if (!FreeLibrary(_user32LibraryHandle)) // reduces reference to library by 1.
+                if (!FreeLibrary(_user32LibraryHandle))
                 {
                     int errorCode = Marshal.GetLastWin32Error();
                     throw new Win32Exception(errorCode, $"Failed to unload library 'User32.dll'. Error {errorCode}: {new Win32Exception(Marshal.GetLastWin32Error()).Message}.");
@@ -68,12 +72,6 @@ namespace ColorPicker.Keyboard
         ~GlobalKeyboardHook()
         {
             Dispose(false);
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         public enum KeyboardState

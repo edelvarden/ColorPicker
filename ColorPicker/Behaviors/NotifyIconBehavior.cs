@@ -34,9 +34,9 @@ namespace ColorPicker.Behaviors
 
             _notifyIcon.ContextMenu.MenuItems.Add(new MenuItem("Settings", OnSettingsClick) { ShowShortcut = false });
             _notifyIcon.ContextMenu.MenuItems.Add(new MenuItem("Close", onCloseClick) { ShowShortcut = false });
+
             _notifyIcon.MouseClick += (s, e) => _settingsWindowHelper.ShowSettings();
         }
-        
         private void Current_Exit(object sender, ExitEventArgs e)
         {
             _notifyIcon.Visible = false;
@@ -49,7 +49,6 @@ namespace ColorPicker.Behaviors
             _notifyIcon.Visible = false;
 
             Process.GetCurrentProcess().Kill();
- 
         }
 
         private void OnSettingsClick(object sender, EventArgs e)

@@ -41,7 +41,7 @@ namespace ColorMeter.Helpers
                         }
                     }
 
-                    return Color.FromArgb((int)Math.Round((double)(r / pixels)), (int)Math.Round((double)(gg / pixels)), (int)Math.Round((double)(b / pixels)));
+                    return Color.FromArgb((int)(r / pixels), (int)(gg / pixels), (int)(b / pixels));
                 }
             }
         }
@@ -49,7 +49,7 @@ namespace ColorMeter.Helpers
         public Color GetPixelColor(System.Windows.Point pixelPosition)
         {
             int x = (int)pixelPosition.X;
-            int y = (int)pixelPosition.Y;   
+            int y = (int)pixelPosition.Y;
             _bmpGraphics.CopyFromScreen(sourceX: x, sourceY: y, destinationX: 0, destinationY: 0, blockRegionSize: _bmp.Size, CopyPixelOperation.SourceCopy);
             return _bmp.GetPixel(0, 0);
         }
