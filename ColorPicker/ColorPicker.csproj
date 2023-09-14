@@ -234,11 +234,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\colorPicker.cur">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\icon.ico" />
     <Content Include="Shaders\GridShader.fx" />
   </ItemGroup>

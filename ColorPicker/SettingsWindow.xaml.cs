@@ -22,6 +22,15 @@ namespace ColorPicker
         public SettingsWindow()
         {
             InitializeComponent();
+            InitializeForm();
+        }
+
+        private void InitializeForm()
+        {
+            this.MouseLeftButtonDown += (s, e) =>
+            {
+                DragMove();
+            };
         }
     }
 }

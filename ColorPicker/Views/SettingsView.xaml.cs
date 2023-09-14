@@ -23,6 +23,11 @@ namespace ColorPicker.Views
         public SettingsView()
         {
             InitializeComponent();
+
+            minBtn.Click += (s, e) =>
+            {
+                ColorPicker.SettingsWindow.GetWindow(this).Visibility = Visibility.Hidden; 
+            };
         }
     }
 }
