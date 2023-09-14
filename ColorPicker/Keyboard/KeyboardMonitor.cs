@@ -77,7 +77,6 @@ namespace ColorPicker.Keyboard
             if (_currentlyPressedKeys.Count == 1 && _currentlyPressedKeys.Contains(27))
             {
                 _zoomWindowHelper.CloseZoomWindow();
-                _appStateHandler.HideMeterArea();
                 _appStateHandler.HideColorPicker();
             }
         }

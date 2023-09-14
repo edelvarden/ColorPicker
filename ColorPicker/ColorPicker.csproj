@@ -119,9 +119,6 @@
     <Compile Include="Keyboard\GlobalKeyboardHook.cs" />
     <Compile Include="Keyboard\GlobalKeyboardHookEventArgs.cs" />
     <Compile Include="Keyboard\KeyboardMonitor.cs" />
-    <Compile Include="MeterAreaWindow.xaml.cs">
-      <DependentUpon>MeterAreaWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Helpers\AppStateHandler.cs" />
     <Compile Include="Helpers\MonitorResolutionHelper.cs" />
     <Compile Include="Mouse\MouseHook.cs" />
@@ -166,10 +163,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="MeterAreaWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Resources\Styles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

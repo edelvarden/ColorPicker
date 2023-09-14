@@ -9,17 +9,13 @@ namespace ColorPicker.Helpers
     public enum WindowType
     {
         ColorPicker,
-        ZoomWindow,
-        ColorMeter
+        ZoomWindow
     }
 
     [Export(typeof(AppStateHandler))]
     public class AppStateHandler
     {
         private readonly List<WindowType> _currentlyShownApps = new List<WindowType>();
-
-        private MeterAreaWindow _meter;
-        private bool _meterAreaShown;
 
         public event EventHandler<WindowType> AppShown;
 
@@ -43,48 +39,12 @@ namespace ColorPicker.Helpers
             AppHidden?.Invoke(this, WindowType.ColorPicker);
         }
 
-        public bool IsMeterAreaShown
-        {
-            get
-            {
-                return _meterAreaShown;
-            }
-        }
-
         public List<WindowType> CurrentlyShownApps
         {
             get
             {
                 return _currentlyShownApps;
             }
-        }
-
-        public void ShowMeterArea()
-        {
-            if (_meter == null)
-            {
-                _meter = new MeterAreaWindow();
-            }
-            _meter.Show();
-            _meterAreaShown = true;
-            AddShownApp(WindowType.ColorMeter);
-            AppShown?.Invoke(this, WindowType.ColorMeter);
-        }
-
-        public void HideMeterArea()
-        {
-            if (_meter != null)
-            {
-                _meter.Hide();
-                _meterAreaShown = false;
-            }
-            RemoveShownApp(WindowType.ColorMeter);
-            AppHidden?.Invoke(this, WindowType.ColorMeter);
-        }
-
-        public void ShowColorHistory()
-        {
-            HideColorPicker();
         }
 
         public void SetTopMost()

@@ -44,7 +44,7 @@ namespace ColorPicker.ViewModels
             mouseInfoProvider.MouseColorChanged += Mouse_ColorChanged;
             mouseInfoProvider.OnLeftMouseDown += MouseInfoProvider_OnLeftMouseDown;
             mouseInfoProvider.OnLeftMouseUp += MouseInfoProvider_OnLeftMouseUp;
-            mouseInfoProvider.OnRightMouseDown += MouseInfoProvider_OnRightMouseDown;
+            mouseInfoProvider.OnRightMouseDown += MouseInfoProvider_OnLeftMouseDown;
             mouseInfoProvider.MousePositionChanged += MouseInfoProvider_MousePositionChanged;
             mouseInfoProvider.OnMouseWheel += MouseInfoProvider_OnMouseWheel;
 
@@ -90,12 +90,7 @@ namespace ColorPicker.ViewModels
 
         private void MouseInfoProvider_MousePositionChanged(object sender, Point e)
         {
-            // show meter area only after we detected a movement
-            if (_mouseDown && !_appStateHandler.IsMeterAreaShown)
-            {
-                _appStateHandler.ShowMeterArea();
-            }
-            if (!_mouseDown && !_appStateHandler.IsMeterAreaShown)
+            if (!_mouseDown)
             {
                 _currentColor = _colorProvider.GetPixelColor(e);
                 ColorString = ColorFormatHelper.ColorToString(_currentColor, _userSettings.SelectedColorFormat.Value);
@@ -106,7 +101,6 @@ namespace ColorPicker.ViewModels
         private void MouseInfoProvider_OnLeftMouseDown(object sender, System.Drawing.Point p)
         {
             _appStateHandler.HideColorPicker();
-            _appStateHandler.HideMeterArea();
             _mouseDown = true;
         }
 
@@ -119,11 +113,6 @@ namespace ColorPicker.ViewModels
 
             _mouseDown = false;
             _mouseInfoProvider.StopMonitoring();
-        }
-
-        private void MouseInfoProvider_OnRightMouseDown(object sender, System.Drawing.Point p)
-        {
-            _appStateHandler.ShowColorHistory();
         }
 
         private void MouseInfoProvider_OnMouseWheel(object sender, Tuple<Point, bool> e)
