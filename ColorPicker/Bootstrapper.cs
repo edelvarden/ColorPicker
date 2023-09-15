@@ -16,8 +16,6 @@ namespace ColorPicker
         }
 
         public static void Dispose()
-        {
-            Container.Dispose();
-        }
+            => Container.Dispose();
     }
 }
