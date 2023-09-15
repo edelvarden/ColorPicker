@@ -8,15 +8,17 @@
              xmlns:shaders="clr-namespace:ColorPicker.Shaders"
              xmlns:e="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:behaviors="clr-namespace:ColorPicker.Behaviors"
-             d:DesignHeight="450" d:DesignWidth="800" BorderBrush="Black" BorderThickness="2" Focusable="False">
-    <Image Source="{Binding ZoomArea}" RenderOptions.BitmapScalingMode="NearestNeighbor" Stretch="Fill" Width="{Binding Width, Mode=TwoWay}" Height="{Binding Height, Mode=TwoWay}">
-        <e:Interaction.Behaviors>
-            <behaviors:ResizeBehavior Width="{Binding DesiredWidth}" Height="{Binding DesiredHeight}"/>
-            <behaviors:GridEffectBehavior Effect="{Binding ElementName=gridEffect}" ZoomFactor="{Binding ZoomFactor}"/>
-        </e:Interaction.Behaviors>
+             d:DesignHeight="450" d:DesignWidth="800" Focusable="False" Background="Transparent">
+    <Border BorderThickness="1" BorderBrush="{StaticResource MainDarkColor}" Padding="3" Background="{StaticResource SecondaryDarkColor}">
+        <Image Source="{Binding ZoomArea}" RenderOptions.BitmapScalingMode="NearestNeighbor" Stretch="Fill" Width="{Binding Width, Mode=TwoWay}" Height="{Binding Height, Mode=TwoWay}">
+            <e:Interaction.Behaviors>
+                <behaviors:ResizeBehavior Width="{Binding DesiredWidth}" Height="{Binding DesiredHeight}"/>
+                <behaviors:GridEffectBehavior Effect="{Binding ElementName=gridEffect}" ZoomFactor="{Binding ZoomFactor}"/>
+            </e:Interaction.Behaviors>
 
-        <Image.Effect>
-            <shaders:GridShaderEffect x:Name="gridEffect"/>
-        </Image.Effect>
-    </Image>
+            <Image.Effect>
+                <shaders:GridShaderEffect x:Name="gridEffect"/>
+            </Image.Effect>
+        </Image>
+    </Border>
 </UserControl>

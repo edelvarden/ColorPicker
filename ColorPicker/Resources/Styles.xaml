@@ -22,4 +22,14 @@
 
     <SolidColorBrush Color="#CCFFFFFF" x:Key="hoverBrush"/>
 
+    <SolidColorBrush x:Key="MainDarkColor" Color="White" />
+    <SolidColorBrush x:Key="SecondaryDarkColor" Color="#e5e5e5" />
+    <SolidColorBrush x:Key="AccentColor" Color="#4285F4" />
+    <SolidColorBrush x:Key="MainForegroundColor" Color="#111111" />
+
+    <Style TargetType="Grid">
+        <Setter Property="Background" Value="{x:Null}" />
+        <Setter Property="Margin" Value="0" />
+    </Style>
+
 </ResourceDictionary>

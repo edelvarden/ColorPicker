@@ -9,12 +9,9 @@
              xmlns:behaviors="clr-namespace:ColorPicker.Behaviors"
              xmlns:System="clr-namespace:System;assembly=mscorlib"
              xmlns:ColorPickerSettings="clr-namespace:ColorPicker.Settings"
-             d:DesignHeight="450" d:DesignWidth="800" Background="#24292E" Width="310" Foreground="White">
+             d:DesignHeight="450" d:DesignWidth="800" Background="{StaticResource MainDarkColor}" Width="310" Foreground="{StaticResource MainForegroundColor}">
     <UserControl.Resources>
         <!--General Styles-->
-        <SolidColorBrush x:Key="MainDarkColor" Color="#24292E" />
-        <SolidColorBrush x:Key="SecondaryDarkColor" Color="#32383e" />
-        <SolidColorBrush x:Key="AccentColor" Color="#4285F4" />
         <Style TargetType="{x:Type TextBlock}" x:Key="NormalTextBlock">
             <Style.Setters>
                 <Setter Property="FontSize" Value="14"/>
@@ -58,7 +55,7 @@
                                     </Border>
                                     
                                     <!-- Text in Checkbox -->
-                                    <Label x:Name="CheckBoxText" Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" TextBlock.Foreground="White" TextBlock.FontWeight="Normal" TextBlock.FontSize="14" TextBlock.FontFamily="Tahoma" Padding="8 0 0 1" />
+                                    <Label x:Name="CheckBoxText" Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" TextBlock.Foreground="{StaticResource MainForegroundColor}" TextBlock.FontWeight="Normal" TextBlock.FontSize="14" TextBlock.FontFamily="Tahoma" Padding="8 0 0 1" />
                                 </StackPanel>
                             </BulletDecorator.Bullet>
                         </BulletDecorator>
@@ -95,7 +92,9 @@
     <e:Interaction.Behaviors>
         <behaviors:SetShortcutBehavior MonitorKeys="{Binding ShowingKeyboardCaptureOverlay}" ShortCutPreview="{Binding ShortCutPreview, Mode=TwoWay}"/>
     </e:Interaction.Behaviors>
-    <Grid>
+    <Border CornerRadius="4" Background="{StaticResource MainDarkColor}"  BorderThickness="2" BorderBrush="{StaticResource SecondaryDarkColor}">
+        <Grid >
+       
         <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" VerticalAlignment="Top">
             <Button x:Name="minBtn" Width="40" Height="40" Content="✕" Style="{StaticResource CloseButton}"/>
         </StackPanel>
@@ -103,13 +102,13 @@
             <CheckBox IsChecked="{Binding RunOnStartup}"  Content="Run on startup" />
             <CheckBox IsChecked="{Binding ShowColorName}"  Content="Show color name" />
 
-            <Rectangle Height="2" Fill="{StaticResource SecondaryDarkColor}" Margin="2 5"/>
+            <Rectangle Height="2" Fill="{StaticResource SecondaryDarkColor}" Margin="2 10"/>
             <WrapPanel>
                 <TextBlock VerticalAlignment="Center" Style="{StaticResource NormalTextBlock}" Margin="7" Text="Copied color format:"/>
                 <ComboBox Margin="5" SelectedItem="{Binding SelectedColorFormat}" ItemsSource="{Binding Source={StaticResource colorFormat}}"/>
             </WrapPanel>
 
-            <Rectangle Height="2" Fill="{StaticResource SecondaryDarkColor}" Margin="2 5"/>
+            <Rectangle Height="2" Fill="{StaticResource SecondaryDarkColor}" Margin="2 10"/>
             <StackPanel >
                 <TextBlock Style="{StaticResource NormalTextBlock}" Margin="7" FontWeight="Light" Text="Open color picker shortcut:"/>
                 <TextBlock Style="{StaticResource NormalTextBlock}" Margin="7" Text="{Binding ShortCut}"/>
@@ -118,16 +117,16 @@
 
         </StackPanel>
 
-        <Border Background="{StaticResource MainDarkColor}" Visibility="{Binding ShowingKeyboardCaptureOverlay, Converter={StaticResource bool2VisibilityConverter}}">
-            <StackPanel VerticalAlignment="Center">
-                <TextBlock Style="{StaticResource NormalTextBlock}" Text="Press keys" FontSize="18" FontWeight="Light" Margin="0" HorizontalAlignment="Center"/>
-                <TextBlock Style="{StaticResource NormalTextBlock}" Text="{Binding ShortCutPreview}" FontSize="24" FontWeight="Bold" Margin="0,15" HorizontalAlignment="Center"/>
-                <WrapPanel HorizontalAlignment="Center" Margin="0,30,0,0">
-                    <Button Content="Cancel" Command="{Binding CancelShortcutCommand}" Margin="10,0" HorizontalAlignment="Center" Width="100" />
-                    <Button Content="OK" Command="{Binding ConfirmShortcutCommand}" Margin="10,0" HorizontalAlignment="Center" Width="100"/>
-                </WrapPanel>
-            </StackPanel>
-        </Border>
-
+            <Border Background="{StaticResource MainDarkColor}" Visibility="{Binding ShowingKeyboardCaptureOverlay, Converter={StaticResource bool2VisibilityConverter}}">
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock Style="{StaticResource NormalTextBlock}" Text="Press keys" FontSize="18" FontWeight="Light" Margin="0" HorizontalAlignment="Center"/>
+                    <TextBlock Style="{StaticResource NormalTextBlock}" Text="{Binding ShortCutPreview}" FontSize="24" FontWeight="Bold" Margin="0,15" HorizontalAlignment="Center"/>
+                    <WrapPanel HorizontalAlignment="Center" Margin="0,30,0,0">
+                        <Button Content="Cancel" Command="{Binding CancelShortcutCommand}" Margin="10,0" HorizontalAlignment="Center" Width="100" />
+                        <Button Content="OK" Command="{Binding ConfirmShortcutCommand}" Margin="10,0" HorizontalAlignment="Center" Width="100"/>
+                    </WrapPanel>
+                </StackPanel>
+            </Border>
     </Grid>
+    </Border>
 </UserControl>

@@ -9,7 +9,7 @@
         Width="312" Height="380"
         MinWidth="312" MinHeight="380"
         MaxWidth="312" MaxHeight="380"
-        ShowInTaskbar="False" WindowStartupLocation="CenterScreen" Topmost="True" WindowStyle="None"  Background="#24292E" Foreground="White" BorderThickness="2" BorderBrush="#32383e">
+        ShowInTaskbar="False" WindowStartupLocation="CenterScreen" Topmost="True" WindowStyle="None"  Background="Transparent">
     <Window.Icon>
         <BitmapImage UriSource="/Resources/icon.ico"/>
     </Window.Icon>
