@@ -9,7 +9,10 @@
              xmlns:behaviors="clr-namespace:ColorPicker.Behaviors"
              xmlns:System="clr-namespace:System;assembly=mscorlib"
              xmlns:ColorPickerSettings="clr-namespace:ColorPicker.Settings"
-             d:DesignHeight="450" d:DesignWidth="800" Background="{StaticResource MainDarkColor}" Width="310" Foreground="{StaticResource MainForegroundColor}">
+             d:DesignHeight="450" d:DesignWidth="800" 
+             Background="Transparent" 
+             Width="310" 
+             Foreground="{StaticResource MainForegroundColor}">
     <UserControl.Resources>
         <!--General Styles-->
         <Style TargetType="{x:Type TextBlock}" x:Key="NormalTextBlock">
@@ -92,7 +95,7 @@
     <e:Interaction.Behaviors>
         <behaviors:SetShortcutBehavior MonitorKeys="{Binding ShowingKeyboardCaptureOverlay}" ShortCutPreview="{Binding ShortCutPreview, Mode=TwoWay}"/>
     </e:Interaction.Behaviors>
-    <Border CornerRadius="4" Background="{StaticResource MainDarkColor}"  BorderThickness="2" BorderBrush="{StaticResource SecondaryDarkColor}">
+    <Border CornerRadius="4" Background="{StaticResource MainDarkColor}" BorderThickness="2" BorderBrush="{StaticResource SecondaryDarkColor}">
         <Grid >
        
         <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" VerticalAlignment="Top">
