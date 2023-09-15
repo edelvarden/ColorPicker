@@ -1,6 +1,9 @@
 ﻿using ColorPicker.Helpers;
 using ColorPicker.Mouse;
 using System;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Windows;
 
@@ -30,7 +33,53 @@ namespace ColorPicker
         }
 
         protected override void OnStartup(StartupEventArgs e)
-        {
+        {   
+            string exePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            string settingsFilePath = exePath + ".config";
+
+            if (!File.Exists(settingsFilePath))
+            {
+                using (StreamWriter sw = new StreamWriter(settingsFilePath))
+                {
+                    // Write the configuration data to the file.
+                    sw.Write("<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n");
+                    sw.Write("<configuration>\n");
+                    sw.Write("    <configSections>\n");
+                    sw.Write("        <sectionGroup name=\"userSettings\" type=\"System.Configuration.UserSettingsGroup, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089\">\n");
+                    sw.Write("            <section name=\"ColorPicker.Properties.Settings\" type=\"System.Configuration.ClientSettingsSection, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089\" allowExeDefinition=\"MachineToLocalUser\" requirePermission=\"false\" />\n");
+                    sw.Write("        </sectionGroup>\n");
+                    sw.Write("    </configSections>\n");
+                    sw.Write("    <startup>\n");
+                    sw.Write("        <supportedRuntime version=\"v4.0\" sku=\".NETFramework,Version=v4.8\" />\n");
+                    sw.Write("    </startup>\n");
+                    sw.Write("    <userSettings>\n");
+                    sw.Write("        <ColorPicker.Properties.Settings>\n");
+                    sw.Write("            <setting name=\"RunOnStartup\" serializeAs=\"String\">\n");
+                    sw.Write("                <value>False</value>\n");
+                    sw.Write("            </setting>\n");
+                    sw.Write("            <setting name=\"UpdateSettings\" serializeAs=\"String\">\n");
+                    sw.Write("                <value>True</value>\n");
+                    sw.Write("            </setting>\n");
+                    sw.Write("            <setting name=\"ActivationShortcut\" serializeAs=\"String\">\n");
+                    sw.Write("                <value>LWin + C</value>\n");
+                    sw.Write("            </setting>\n");
+                    sw.Write("            <setting name=\"SelectedColorFormat\" serializeAs=\"String\">\n");
+                    sw.Write("                <value>HEX</value>\n");
+                    sw.Write("            </setting>\n");
+                    sw.Write("            <setting name=\"ShowColorName\" serializeAs=\"String\">\n");
+                    sw.Write("                <value>False</value>\n");
+                    sw.Write("            </setting>\n");
+                    sw.Write("        </ColorPicker.Properties.Settings>\n");
+                    sw.Write("    </userSettings>\n");
+                    sw.Write("</configuration>\n");
+                }
+
+                // Restart program to read config file again
+                Process.Start(exePath);
+                Process.GetCurrentProcess().Kill();
+                return;
+            }
+
             // allow only one instance of color picker
             bool createdNew;
             _instanceMutex = new Mutex(true, @"Global\ControlPanel", out createdNew);
