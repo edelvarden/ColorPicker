@@ -1,6 +1,6 @@
-﻿using ColorPicker.Helpers;
+﻿using System.Windows;
+using ColorPicker.Helpers;
 using Microsoft.Xaml.Behaviors;
-using System.Windows;
 
 namespace ColorPicker.Behaviors
 {
@@ -8,7 +8,6 @@ namespace ColorPicker.Behaviors
     {
         private ZoomWindowHelper _zoomWindowHelper;
 
-        // Use constructor for initialization instead of attaching event handlers in OnAttached
         protected override void OnAttached()
         {
             base.OnAttached();
@@ -17,11 +16,8 @@ namespace ColorPicker.Behaviors
 
         private void AssociatedObject_Loaded(object sender, RoutedEventArgs e)
         {
-            // Attach event handlers here when the window is loaded
             AssociatedObject.PreviewKeyDown += AssociatedObject_PreviewKeyDown;
             AssociatedObject.MouseLeftButtonDown += AssociatedObject_MouseLeftButtonDown;
-
-            // Use Dependency Injection to get the ZoomWindowHelper instance
             _zoomWindowHelper = Bootstrapper.Container.GetExportedValue<ZoomWindowHelper>();
         }
 
@@ -45,3 +41,4 @@ namespace ColorPicker.Behaviors
         }
     }
 }
+

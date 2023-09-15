@@ -23,20 +23,30 @@ namespace ColorPicker.Helpers
 
         public event EventHandler AppClosed;
 
+        private bool _colorPickerShown;
+
         public void ShowColorPicker()
         {
-            AddShownApp(WindowType.ColorPicker);
-            AppShown?.Invoke(this, WindowType.ColorPicker);
-            Application.Current.MainWindow.Opacity = 0;
-            Application.Current.MainWindow.Visibility = Visibility.Visible;
+            if (!_colorPickerShown)
+            {
+                AddShownApp(WindowType.ColorPicker);
+                AppShown?.Invoke(this, WindowType.ColorPicker);
+                Application.Current.MainWindow.Opacity = 0;
+                Application.Current.MainWindow.Visibility = Visibility.Visible;
+                _colorPickerShown = true;
+            }
         }
 
         public void HideColorPicker()
         {
-            Application.Current.MainWindow.Opacity = 0;
-            Application.Current.MainWindow.Visibility = Visibility.Collapsed;
-            RemoveShownApp(WindowType.ColorPicker);
-            AppHidden?.Invoke(this, WindowType.ColorPicker);
+            if (_colorPickerShown)
+            {
+                Application.Current.MainWindow.Opacity = 0;
+                Application.Current.MainWindow.Visibility = Visibility.Collapsed;
+                RemoveShownApp(WindowType.ColorPicker);
+                AppHidden?.Invoke(this, WindowType.ColorPicker);
+                _colorPickerShown = false;
+            }
         }
 
         public List<WindowType> CurrentlyShownApps
