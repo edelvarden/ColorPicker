@@ -5,7 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Media;
-using static ColorPicker.Win32Apis;
+using static ColorPicker.NativeMethods;
 
 namespace ColorPicker.Helpers
 {
@@ -31,19 +31,8 @@ namespace ColorPicker.Helpers
             Name = new string(info.szDevice).TrimEnd((char)0);
         }
 
-        public static DpiScale GetCurrentMonitorDpi(string windowTag = null)
+        public static DpiScale GetCurrentMonitorDpi()
         {
-            if (!string.IsNullOrEmpty(windowTag))
-            {
-                foreach (Window window in Application.Current.Windows)
-                {
-
-                    if (window.Tag?.ToString() == windowTag)
-                    {
-                        return VisualTreeHelper.GetDpi(window);
-                    }
-                }
-            }
             return VisualTreeHelper.GetDpi(Application.Current.MainWindow);
         }
 

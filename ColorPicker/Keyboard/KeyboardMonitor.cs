@@ -17,6 +17,7 @@ namespace ColorPicker.Keyboard
         private HashSet<int> _currentlyPressedKeys = new HashSet<int>();
         private SortedSet<int> _activationKeys = new SortedSet<int>();
         private GlobalKeyboardHook _keyboardHook;
+        private bool disposedValue;
 
         [ImportingConstructor]
         public KeyboardMonitor(AppStateHandler appStateHandler, IUserSettings userSettings, ZoomWindowHelper zoomWindowHelper)
@@ -79,6 +80,26 @@ namespace ColorPicker.Keyboard
                 _zoomWindowHelper.CloseZoomWindow();
                 _appStateHandler.HideColorPicker();
             }
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    _keyboardHook?.Dispose();
+                }
+
+                disposedValue = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }

@@ -41,12 +41,16 @@ namespace ColorPicker.ViewModels
             _appStateHandler = appStateHandler;
             _userSettings = userSettings;
             _colorProvider = colorProvider;
-            mouseInfoProvider.MouseColorChanged += Mouse_ColorChanged;
-            mouseInfoProvider.OnLeftMouseDown += MouseInfoProvider_OnLeftMouseDown;
-            mouseInfoProvider.OnLeftMouseUp += MouseInfoProvider_OnLeftMouseUp;
-            mouseInfoProvider.OnRightMouseDown += MouseInfoProvider_OnLeftMouseDown;
-            mouseInfoProvider.MousePositionChanged += MouseInfoProvider_MousePositionChanged;
-            mouseInfoProvider.OnMouseWheel += MouseInfoProvider_OnMouseWheel;
+
+            if (mouseInfoProvider != null)
+            {
+                mouseInfoProvider.MouseColorChanged += Mouse_ColorChanged;
+                mouseInfoProvider.OnLeftMouseDown += MouseInfoProvider_OnMouseDown;
+                mouseInfoProvider.OnLeftMouseUp += MouseInfoProvider_OnMouseDown;
+                mouseInfoProvider.OnRightMouseDown += MouseInfoProvider_OnMouseDown;
+                mouseInfoProvider.MousePositionChanged += MouseInfoProvider_MousePositionChanged;
+                mouseInfoProvider.OnMouseWheel += MouseInfoProvider_OnMouseWheel;
+            }
 
             keyboardMonitor.Start();
         }
@@ -83,6 +87,11 @@ namespace ColorPicker.ViewModels
 
         private void Mouse_ColorChanged(object sender, System.Drawing.Color color)
         {
+            SetColorDetails(color);
+        }
+
+        private void SetColorDetails(System.Drawing.Color color)
+        {
             _currentColor = color;
             ColorString = ColorFormatHelper.ColorToString(color, _userSettings.SelectedColorFormat.Value);
             DisplayedColorBrush = new SolidColorBrush(Color.FromArgb(color.A, color.R, color.G, color.B));
@@ -98,20 +107,15 @@ namespace ColorPicker.ViewModels
             }
         }
 
-        private void MouseInfoProvider_OnLeftMouseDown(object sender, System.Drawing.Point p)
-        {
-            _appStateHandler.HideColorPicker();
-            _mouseDown = true;
-        }
-
-        private void MouseInfoProvider_OnLeftMouseUp(object sender, System.Drawing.Point p)
+        private void MouseInfoProvider_OnMouseDown(object sender, System.Drawing.Point p)
         {
             if (ColorString != null)
             {
-                ClipboardHelper.CopyIntoClipboard(ColorString);
+                ClipboardHelper.CopyToClipboard(ColorString);
             }
 
-            _mouseDown = false;
+            _appStateHandler.OnColorPickerMouseDown();
+            _appStateHandler.HideColorPicker();
             _mouseInfoProvider.StopMonitoring();
         }
 

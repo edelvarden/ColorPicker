@@ -26,7 +26,7 @@ namespace ColorPicker.Behaviors
         public static DependencyProperty BottomBorderRowProperty = DependencyProperty.Register("BottomBorderRow", typeof(RowDefinition), typeof(ResizeMonitorAreaBehavior));
 
         public static DependencyProperty ColorTextBlockProperty = DependencyProperty.Register("ColorTextBlock", typeof(TextBlock), typeof(ResizeMonitorAreaBehavior));
-       
+
         public Border CaptureAreaBorder
         {
             get
@@ -119,7 +119,7 @@ namespace ColorPicker.Behaviors
 
                     BottomBorderRow.Height = new GridLength(BottomBorderHeight);
 
-                    if(AssociatedObject.Width < MinWidth)
+                    if (AssociatedObject.Width < MinWidth)
                     {
                         CaptureAreaBorder.Margin = new Thickness(0, 0, MinWidth - AssociatedObject.Width, CaptureAreaBorder.Margin.Bottom);
                         AssociatedObject.Width = MinWidth;
@@ -182,7 +182,7 @@ namespace ColorPicker.Behaviors
             CaptureAreaBorder.Margin = new Thickness(0, 0, 0, 0);
             CaptureAreaBorder.HorizontalAlignment = HorizontalAlignment.Stretch;
             ColorAreaBorder.Height = 0;
-      
+
             _settingSize = true;
         }
 
@@ -199,7 +199,7 @@ namespace ColorPicker.Behaviors
                 CaptureAreaBorder.Width = double.NaN;
                 CaptureAreaBorder.Height = double.NaN;
                 AssociatedObject.SizeToContent = SizeToContent.Manual;
-                AssociatedObject.Width = 0; 
+                AssociatedObject.Width = 0;
                 AssociatedObject.Height = 0;
                 BottomBorderRow.Height = new GridLength(0);
             }
@@ -207,7 +207,7 @@ namespace ColorPicker.Behaviors
 
         private Point GetMousePositionScaled(Point mousePosition)
         {
-            var dpi = MonitorResolutionHelper.GetCurrentMonitorDpi("MeterAreaMonitor");
+            var dpi = MonitorResolutionHelper.GetCurrentMonitorDpi();
             return new Point(mousePosition.X / dpi.DpiScaleX, mousePosition.Y / dpi.DpiScaleX);
         }
     }

@@ -60,7 +60,11 @@ namespace ColorPicker.Helpers
 
         private static string ColorToHex(Color c)
         {
-            return $"#{c.R:X2}{c.G:X2}{c.B:X2}";
+            const string hexFormat = "x2";
+
+            return $"{c.R.ToString(hexFormat, CultureInfo.InvariantCulture)}"
+                + $"{c.G.ToString(hexFormat, CultureInfo.InvariantCulture)}"
+                + $"{c.B.ToString(hexFormat, CultureInfo.InvariantCulture)}";
         }
 
         private static string ColorToRgb(Color c)

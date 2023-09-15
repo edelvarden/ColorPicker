@@ -1,34 +1,49 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
+using System.Text;
 using System.Windows;
+using static ColorPicker.NativeMethods;
 
 namespace ColorPicker.Helpers
 {
     public static class ClipboardHelper
     {
-        private const uint CLIPBRD_E_CANT_OPEN = 0x800401D0;
+        /// <summary>
+        /// Defined error code for "clipboard can't open"
+        /// </summary>
+        private const uint ErrorCodeClipboardCantOpen = 0x800401D0;
 
-        public static void CopyIntoClipboard(string value, int maxRetries = 10, int retryDelayMilliseconds = 10)
+        public static void CopyToClipboard(string colorRepresentationToCopy)
         {
-            for (int i = 0; i < maxRetries; i++)
+            if (!string.IsNullOrEmpty(colorRepresentationToCopy))
             {
-                try
+                // nasty hack - sometimes clipboard can be in use and it will raise and exception
+                for (int i = 0; i < 10; i++)
                 {
-                    Clipboard.SetDataObject(value.ToLowerInvariant());
-                    return; // Success, exit the loop
-                }
-                catch (COMException ex)
-                {
-                    if ((uint)ex.ErrorCode != CLIPBRD_E_CANT_OPEN)
+                    try
                     {
-                        Logger.LogError("Failed to set text into clipboard", ex);
+                        Clipboard.SetDataObject(colorRepresentationToCopy);
+                        break;
                     }
-                }
-                System.Threading.Thread.Sleep(retryDelayMilliseconds);
-            }
+                    catch (COMException ex)
+                    {
+                        var hwnd = GetOpenClipboardWindow();
+                        var sb = new StringBuilder(501);
+                        _ = GetWindowText(hwnd.ToInt32(), sb, 500);
+                        var applicationUsingClipboard = sb.ToString();
 
-            // If all retries fail, you may want to throw an exception or log an error here.
-            Logger.LogError($"Failed to set text into clipboard after {maxRetries} retries.");
+                        if ((uint)ex.ErrorCode != ErrorCodeClipboardCantOpen)
+                        {
+                            Logger.LogError("Failed to set text into clipboard", ex);
+                        }
+                        else
+                        {
+                            Logger.LogError("Failed to set text into clipboard, application that is locking clipboard - " + applicationUsingClipboard, ex);
+                        }
+                    }
+
+                    System.Threading.Thread.Sleep(10);
+                }
+            }
         }
     }
 }

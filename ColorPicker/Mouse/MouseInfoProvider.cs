@@ -6,7 +6,7 @@ using System.ComponentModel.Composition;
 using System.Drawing;
 using System.Windows.Input;
 using System.Windows.Threading;
-using static ColorPicker.Win32Apis;
+using static ColorPicker.NativeMethods;
 
 namespace ColorPicker.Mouse
 {
@@ -99,7 +99,7 @@ namespace ColorPicker.Mouse
             DisposeMouseHook();
         }
 
-        private void AppStateMonitor_AppShown(object sender, WindowType e)
+        private void AppStateMonitor_AppShown(object sender, EventArgs e)
         {
             UpdateMouseInfo();
             if (!_timer.IsEnabled)

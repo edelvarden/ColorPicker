@@ -156,7 +156,7 @@ namespace ColorPicker.Helpers
                 _zoomWindow.Show();
                 justShown = true;
                 // make sure color picker window is on top of just opened zoom window
-                _appStateHandler.SetTopMost();
+                AppStateHandler.SetTopMost();
             }
 
             // dirty hack - sometimes when we just show a window on a second monitor with different DPI, 
@@ -192,7 +192,7 @@ namespace ColorPicker.Helpers
             _zoomWindow.Top = _lastTop;
         }
 
-        private void AppSateHandler_AppHidden(object sender, WindowType type)
+        private void AppSateHandler_AppHidden(object sender, EventArgs type)
         {
             CloseZoomWindow();
         }
