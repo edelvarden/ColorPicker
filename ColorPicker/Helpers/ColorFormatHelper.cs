@@ -55,7 +55,7 @@ namespace ColorPicker.Helpers
             ushort g = (ushort)(c.G >> 2);
             ushort b = (ushort)(c.B >> 3);
             ushort rgb565 = (ushort)((r << 11) | (g << 5) | b);
-            return $"#{rgb565:X2}";
+            return $"{rgb565:X2}";
         }
 
         private static string ColorToHex(Color c)
