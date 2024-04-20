@@ -18,7 +18,9 @@ namespace ColorPicker.Helpers
                 case ColorFormat.hsv:
                     return ColorToHsv(c);
                 case ColorFormat.rgb:
-                    return ColorToRgb(c);
+                    return ColorToRgb(c);                
+                case ColorFormat.rgbPercent:
+                    return ColorToRgbPercent(c);
                 case ColorFormat.vec4:
                     return ColorToVec4(c);
                 case ColorFormat.rgb565:
@@ -70,6 +72,14 @@ namespace ColorPicker.Helpers
         private static string ColorToRgb(Color c)
         {
             return $"rgb({c.R}, {c.G}, {c.B})";
+        }
+
+        private static string ColorToRgbPercent(Color c)
+        {
+            int rPercent = (int)Math.Round((c.R / 255.0) * 100);
+            int gPercent = (int)Math.Round((c.G / 255.0) * 100);
+            int bPercent = (int)Math.Round((c.B / 255.0) * 100);
+            return $"rgb({rPercent}%, {gPercent}%, {bPercent}%)";
         }
 
         private static string ColorToHsl(Color c)
