@@ -72,6 +72,14 @@ namespace ColorPicker.ViewModels
             }
         }
 
+        public string ColorStringWithoutName
+        {
+            get
+            {
+                return _colorString;
+            }
+        }
+
         public Brush DisplayedColorBrush
         {
             get
@@ -108,10 +116,10 @@ namespace ColorPicker.ViewModels
         }
 
         private void MouseInfoProvider_OnMouseDown(object sender, System.Drawing.Point p)
-        {
-            if (ColorString != null)
+        { 
+            if (ColorStringWithoutName != null)
             {
-                ClipboardHelper.CopyToClipboard(ColorString);
+                ClipboardHelper.CopyToClipboard(ColorStringWithoutName);
             }
 
             _appStateHandler.OnColorPickerMouseDown();
