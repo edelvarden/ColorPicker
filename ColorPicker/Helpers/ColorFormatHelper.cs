@@ -92,10 +92,14 @@ namespace ColorPicker.Helpers
 
         private static string ColorToHsv(Color c)
         {
-            int h = (int)Math.Round(c.GetHue());
-            int s = (int)Math.Round(c.GetSaturation() * 100);
-            int v = (int)Math.Round(c.GetBrightness() * 100);
-            return $"hsv({h}, {s}%, {v}%)";
+            int max = Math.Max(c.R, Math.Max(c.G, c.B));
+            int min = Math.Min(c.R, Math.Min(c.G, c.B));
+
+            var h = (int)Math.Round(c.GetHue());
+            var s = (int)Math.Round(((max == 0) ? 0 : 1d - (1d * min / max)) * 100);
+            var v = (int)Math.Round((max / 255d) * 100);
+
+            return $"hsv({h}, {s}, {v})";
         }
 
         private static string ColorToVec4(Color c)
