@@ -17,6 +17,8 @@ namespace ColorPicker.Helpers
                     return ColorToHsl(c);
                 case ColorFormat.hsv:
                     return ColorToHsv(c);
+                case ColorFormat.hwb:
+                    return ColorToHwb(c);
                 case ColorFormat.rgb:
                     return ColorToRgb(c);                
                 case ColorFormat.rgbPercent:
@@ -95,11 +97,47 @@ namespace ColorPicker.Helpers
             int max = Math.Max(c.R, Math.Max(c.G, c.B));
             int min = Math.Min(c.R, Math.Min(c.G, c.B));
 
-            var h = (int)Math.Round(c.GetHue());
-            var s = (int)Math.Round(((max == 0) ? 0 : 1d - (1d * min / max)) * 100);
-            var v = (int)Math.Round((max / 255d) * 100);
+            var h = c.GetHue();
+            var s = (max == 0) ? 0 : 1d - (1d * min / max);
+            var v = max / 255d;
 
-            return $"hsv({h}, {s}, {v})";
+            return $"hsv({(int)Math.Round(h)}, {(int)Math.Round(s * 100)}, {(int)Math.Round(v * 100)})";
+        }
+
+        private static string ColorToHwb(Color c)
+        {
+            double r = c.R / 255.0;
+            double g = c.G / 255.0;
+            double b = c.B / 255.0;
+
+            double max = Math.Max(r, Math.Max(g, b));
+            double min = Math.Min(r, Math.Min(g, b));
+
+            double hue;
+            if (max == min)
+            {
+                hue = 0; // Undefined, achromatic
+            }
+            else if (max == r)
+            {
+                hue = ((g - b) / (max - min)) % 6.0;
+            }
+            else if (max == g)
+            {
+                hue = ((b - r) / (max - min)) + 2.0;
+            }
+            else // max == b
+            {
+                hue = ((r - g) / (max - min)) + 4.0;
+            }
+
+            hue = hue < 0 ? hue + 6.0 : hue; // Fix 1: Handle negative hue values
+            hue *= 60.0; // Convert to degrees
+
+            double whiteness = min;
+            double blackness = 1.0 - max; 
+
+            return $"hwb({Math.Round(hue)}, {Math.Round(whiteness * 100)}%, {Math.Round(blackness * 100)}%)";
         }
 
         private static string ColorToVec4(Color c)
