@@ -1,0 +1,27 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+	<!--COLORS-->
+	<RadialGradientBrush
+        x:Key="CenterGradientColor"
+        GradientOrigin="0.5,0.5"
+        Center="0.5,0.5"
+        RadiusX="0.5"
+        RadiusY="0.5">
+		<RadialGradientBrush.GradientStops>
+			<GradientStop Color="#404040" Offset="0" />
+			<GradientStop Color="#303030" Offset="0.8" />
+			<GradientStop Color="#202020" Offset="1.0" />
+		</RadialGradientBrush.GradientStops>
+	</RadialGradientBrush>
+
+	<SolidColorBrush x:Key="MainDarkColor" Color="#fafafa" />
+	<SolidColorBrush x:Key="SecondaryDarkColor" Color="#e5e5e5" />
+	<SolidColorBrush x:Key="AccentColor" Color="#4285F4" />
+	<SolidColorBrush x:Key="MainForegroundColor" Color="#404040" />
+	<SolidColorBrush x:Key="BorderColor" Color="#c5c5c5" />
+
+	<Style TargetType="Grid">
+		<Setter Property="Background" Value="{x:Null}" />
+		<Setter Property="Margin" Value="0" />
+	</Style>
+</ResourceDictionary>
