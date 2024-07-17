@@ -16,7 +16,8 @@
 
 	<SolidColorBrush x:Key="MainDarkColor" Color="#202020" />
 	<SolidColorBrush x:Key="SecondaryDarkColor" Color="#e5e5e5" />
-	<SolidColorBrush x:Key="AccentColor" Color="#4285F4" />
+    <SolidColorBrush x:Key="AccentColor" Color="#8ab4f8" />
+    <SolidColorBrush x:Key="OnAccentColor" Color="#202124" />
 	<SolidColorBrush x:Key="MainForegroundColor" Color="#fafafa" />
 	<SolidColorBrush x:Key="BorderColor" Color="#424242" />
 

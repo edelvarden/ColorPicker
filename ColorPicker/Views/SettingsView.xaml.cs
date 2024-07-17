@@ -24,7 +24,7 @@ namespace ColorPicker.Views
         {
             InitializeComponent();
 
-            minBtn.Click += (s, e) =>
+            closeButton.Click += (s, e) =>
             {
                 ColorPicker.SettingsWindow.GetWindow(this).Visibility = Visibility.Hidden; 
             };
