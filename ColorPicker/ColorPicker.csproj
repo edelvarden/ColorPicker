@@ -253,7 +253,7 @@
     <PreBuildEvent>::taskkill /f /im ColorPicker.exe</PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>del /f $(ProjectDir)$(OutDir)*.pdb
-rd /s /q $(ProjectDir)$(OutDir)Resources</PostBuildEvent>
+    <PostBuildEvent>::del /f $(ProjectDir)$(OutDir)*.pdb
+::rd /s /q $(ProjectDir)$(OutDir)Resources</PostBuildEvent>
   </PropertyGroup>
 </Project>
