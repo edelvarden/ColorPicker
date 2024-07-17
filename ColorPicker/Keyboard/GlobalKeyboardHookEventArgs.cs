@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel;
-using static ColorPicker.Win32Apis;
+using static ColorPicker.NativeMethods;
 
 namespace ColorPicker.Keyboard
 {

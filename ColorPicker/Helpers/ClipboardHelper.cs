@@ -17,18 +17,25 @@ namespace ColorPicker.Helpers
                     Clipboard.SetDataObject(value.ToLowerInvariant());
                     return; // Success, exit the loop
                 }
-                catch (COMException ex)
+                catch (COMException ex) when ((uint)ex.ErrorCode == CLIPBRD_E_CANT_OPEN)
                 {
-                    if ((uint)ex.ErrorCode != CLIPBRD_E_CANT_OPEN)
+                    var retriesLeft = maxRetries - i - 1;
+                    if (retriesLeft > 0)
                     {
-                        Logger.LogError("Failed to set text into clipboard", ex);
+                        Logger.LogWarning($"Failed to set text into clipboard, retrying {retriesLeft} more times.");
+                        System.Threading.Thread.Sleep(retryDelayMilliseconds);
+                    }
+                    else
+                    {
+                        Logger.LogError($"Failed to set text into clipboard after {maxRetries} retries.");
                     }
                 }
-                System.Threading.Thread.Sleep(retryDelayMilliseconds);
+                catch (Exception ex)
+                {
+                    Logger.LogError("Unexpected error while setting text into clipboard", ex);
+                    // Consider whether to rethrow or handle other exceptions here
+                }
             }
-
-            // If all retries fail, you may want to throw an exception or log an error here.
-            Logger.LogError($"Failed to set text into clipboard after {maxRetries} retries.");
         }
     }
 }

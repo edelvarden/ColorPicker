@@ -147,7 +147,7 @@
     <Compile Include="Views\ZoomView.xaml.cs">
       <DependentUpon>ZoomView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Win32Apis.cs" />
+    <Compile Include="NativeMethods.cs" />
     <Compile Include="ZoomWindow.xaml.cs">
       <DependentUpon>ZoomWindow.xaml</DependentUpon>
     </Compile>

@@ -4,13 +4,16 @@ using System.Runtime.Versioning;
 
 namespace ColorPicker
 {
-    public static class Win32Apis
+    public static class NativeMethods
     {
         public const int WH_KEYBOARD_LL = 13;
         public const int VkSnapshot = 0x2c;
         public const int KfAltdown = 0x2000;
         public const int LlkhfAltdown = (KfAltdown >> 8);
         public const int MonitorinfofPrimary = 0x00000001;
+
+        [DllImport("user32.dll")]
+        internal static extern IntPtr GetOpenClipboardWindow();
 
         public delegate bool MonitorEnumProc(
             IntPtr monitor, IntPtr hdc, IntPtr lprcMonitor, IntPtr lParam);

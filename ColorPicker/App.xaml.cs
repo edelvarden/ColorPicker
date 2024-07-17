@@ -56,7 +56,7 @@ namespace ColorPicker
 
         private void LoadTheme()
         {
-            bool isDarkTheme = IsSystemInDarkMode();
+            bool isDarkTheme = RegistryHelper.IsSystemInDarkMode();
 
             var themeDictionary = new ResourceDictionary();
             if (isDarkTheme)
@@ -69,32 +69,6 @@ namespace ColorPicker
             }
 
             Resources.MergedDictionaries.Add(themeDictionary);
-        }
-
-        private bool IsSystemInDarkMode()
-        {
-            const string registryKeyPath = @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize";
-            const string registryValueName = "AppsUseLightTheme";
-
-            bool isDarkMode = false;
-
-            // Open the registry key
-            using (RegistryKey key = Registry.CurrentUser.OpenSubKey(registryKeyPath))
-            {
-                if (key != null)
-                {
-                    // Read the registry value
-                    object value = key.GetValue(registryValueName);
-
-                    if (value != null && int.TryParse(value.ToString(), out int intValue))
-                    {
-                        // Check if AppsUseLightTheme is set to 0 (dark mode)
-                        isDarkMode = (intValue == 0);
-                    }
-                }
-            }
-
-            return isDarkMode;
         }
 
         private void LoadSettings()
