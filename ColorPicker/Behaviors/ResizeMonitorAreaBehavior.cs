@@ -26,53 +26,29 @@ namespace ColorPicker.Behaviors
         public static DependencyProperty BottomBorderRowProperty = DependencyProperty.Register("BottomBorderRow", typeof(RowDefinition), typeof(ResizeMonitorAreaBehavior));
 
         public static DependencyProperty ColorTextBlockProperty = DependencyProperty.Register("ColorTextBlock", typeof(TextBlock), typeof(ResizeMonitorAreaBehavior));
-       
+
         public Border CaptureAreaBorder
         {
-            get
-            {
-                return (Border)GetValue(CaptureAreaBorderProperty);
-            }
-            set
-            {
-                SetValue(CaptureAreaBorderProperty, value);
-            }
+            get { return (Border)GetValue(CaptureAreaBorderProperty); }
+            set { SetValue(CaptureAreaBorderProperty, value); }
         }
 
         public Border ColorAreaBorder
         {
-            get
-            {
-                return (Border)GetValue(ColorAreaBorderProperty);
-            }
-            set
-            {
-                SetValue(ColorAreaBorderProperty, value);
-            }
+            get { return (Border)GetValue(ColorAreaBorderProperty); }
+            set { SetValue(ColorAreaBorderProperty, value); }
         }
 
         public RowDefinition BottomBorderRow
         {
-            get
-            {
-                return (RowDefinition)GetValue(BottomBorderRowProperty);
-            }
-            set
-            {
-                SetValue(BottomBorderRowProperty, value);
-            }
+            get { return (RowDefinition)GetValue(BottomBorderRowProperty); }
+            set { SetValue(BottomBorderRowProperty, value); }
         }
 
         public TextBlock ColorTextBlock
         {
-            get
-            {
-                return (TextBlock)GetValue(ColorTextBlockProperty);
-            }
-            set
-            {
-                SetValue(ColorTextBlockProperty, value);
-            }
+            get { return (TextBlock)GetValue(ColorTextBlockProperty); }
+            set { SetValue(ColorTextBlockProperty, value); }
         }
 
         protected override void OnAttached()
@@ -84,6 +60,11 @@ namespace ColorPicker.Behaviors
             _mouseInfoProvider.OnLeftMouseDown += MouseInfoProvider_OnLeftMouseDown;
 
             AssociatedObject.Loaded += AssociatedObject_Loaded;
+            AssociatedObject.IsVisibleChanged += AssociatedObject_IsVisibleChanged;
+
+            // Attach appearance animation behavior
+            var appearBehavior = new AppearAnimationBehavior();
+            appearBehavior.Attach(AssociatedObject);
         }
 
         private void setColor()
@@ -95,10 +76,12 @@ namespace ColorPicker.Behaviors
             var height = (CaptureAreaBorder.ActualHeight - 6) * dpi.DpiScaleX;
 
             var color = _colorProvider.GetAverageColor(new System.Drawing.Rectangle((int)left, (int)top, (int)width, (int)height));
-            ColorTextBlock.Text = ColorFormatHelper.ColorToString(color, _userSettings.SelectedColorFormat.Value); ;
+            ColorTextBlock.Text = ColorFormatHelper.ColorToString(color,
+_userSettings.SelectedColorFormat.Value);
         }
 
         private bool _settingSize = false;
+
         private void AssociatedObject_Loaded(object sender, RoutedEventArgs e)
         {
             _corner = GetMousePositionScaled(new Point(Math.Round(_mouseInfoProvider.CurrentPosition.X), Math.Round(_mouseInfoProvider.CurrentPosition.Y)));
@@ -106,70 +89,21 @@ namespace ColorPicker.Behaviors
             WindowHelper.SetPositionAndSize(AssociatedObject, _corner.X, _corner.Y, 0, 0);
             _settingSize = true;
 
-            _mouseInfoProvider.OnLeftMouseUp += (s, pos) =>
+            _mouseInfoProvider.OnLeftMouseUp += MouseInfoProvider_OnLeftMouseUp;
+            _mouseInfoProvider.MousePositionChanged += MouseInfoProvider_MousePositionChanged;
+        }
+
+        private void AssociatedObject_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if ((bool)e.NewValue)
             {
-                // minimum size is 3*3 (+borders)
-                if (AssociatedObject.Height > 9 && AssociatedObject.Width > 9)
-                {
-                    CaptureAreaBorder.Width = AssociatedObject.Width;
-                    CaptureAreaBorder.Height = AssociatedObject.Height;
-                    ColorAreaBorder.Width = double.NaN;
-
-                    AssociatedObject.SizeToContent = SizeToContent.WidthAndHeight;
-
-                    BottomBorderRow.Height = new GridLength(BottomBorderHeight);
-
-                    if(AssociatedObject.Width < MinWidth)
-                    {
-                        CaptureAreaBorder.Margin = new Thickness(0, 0, MinWidth - AssociatedObject.Width, CaptureAreaBorder.Margin.Bottom);
-                        AssociatedObject.Width = MinWidth;
-                    }
-
-                    CaptureAreaBorder.HorizontalAlignment = HorizontalAlignment.Left;
-
-                    var setHeight = new DoubleAnimation(0, BottomBorderHeight, new Duration(TimeSpan.FromMilliseconds(150)), FillBehavior.Stop);
-                    setHeight.Completed += (s1, e1) =>
-                    {
-                        ColorAreaBorder.BeginAnimation(FrameworkElement.HeightProperty, null); ColorAreaBorder.Height = BottomBorderHeight;
-                        setColor();
-                    };
-
-                    setHeight.EasingFunction = new QuadraticEase() { EasingMode = EasingMode.EaseOut };
-
-                    ColorAreaBorder.BeginAnimation(FrameworkElement.HeightProperty, setHeight, HandoffBehavior.Compose);
-                }
-
-                _settingSize = false;
-
-            };
-
-            _mouseInfoProvider.MousePositionChanged += (s, mousePosition) =>
+                var scaledMousePosition = GetMousePositionScaled(_mouseInfoProvider.CurrentPosition);
+                WindowHelper.SetPositionAndSize(AssociatedObject, scaledMousePosition.X, scaledMousePosition.Y, 0, 0);
+            }
+            else
             {
-                if (_settingSize)
-                {
-                    var mousePositionScaled = GetMousePositionScaled(mousePosition);
-
-                    var width = Math.Abs(_corner.X - Math.Round(mousePositionScaled.X));
-                    var height = Math.Abs(_corner.Y - Math.Round(mousePositionScaled.Y));
-
-
-                    var leftCornerX = _corner.X;
-                    var leftCornerY = _corner.Y;
-
-                    if (mousePositionScaled.X < _corner.X)
-                    {
-                        leftCornerX = mousePositionScaled.X;
-                    }
-                    if (mousePositionScaled.Y < _corner.Y)
-                    {
-                        leftCornerY = mousePositionScaled.Y;
-                    }
-
-                    WindowHelper.SetPositionAndSize(AssociatedObject, leftCornerX, leftCornerY, width, height);
-                }
-            };
-
-            AssociatedObject.IsVisibleChanged += AssociatedObject_IsVisibleChanged;
+                ResetCaptureArea();
+            }
         }
 
         private void MouseInfoProvider_OnLeftMouseDown(object sender, System.Drawing.Point p)
@@ -179,30 +113,80 @@ namespace ColorPicker.Behaviors
             BottomBorderRow.Height = new GridLength(0);
 
             WindowHelper.SetPositionAndSize(AssociatedObject, _corner.X, _corner.Y, 0, 0);
-            CaptureAreaBorder.Margin = new Thickness(0, 0, 0, 0);
+            CaptureAreaBorder.Margin = new Thickness(0);
             CaptureAreaBorder.HorizontalAlignment = HorizontalAlignment.Stretch;
             ColorAreaBorder.Height = 0;
-      
+
             _settingSize = true;
         }
 
-        private void AssociatedObject_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        private void MouseInfoProvider_OnLeftMouseUp(object sender, System.Drawing.Point p)
         {
-            if ((bool)e.NewValue)
+            if (AssociatedObject.Height > 9 && AssociatedObject.Width > 9)
             {
-                var scaledMousePosition = GetMousePositionScaled(_mouseInfoProvider.CurrentPosition);
+                CaptureAreaBorder.Width = AssociatedObject.Width;
+                CaptureAreaBorder.Height = AssociatedObject.Height;
+                ColorAreaBorder.Width = double.NaN;
 
-                WindowHelper.SetPositionAndSize(AssociatedObject, scaledMousePosition.X, scaledMousePosition.Y, 0, 0);
+                AssociatedObject.SizeToContent = SizeToContent.WidthAndHeight;
+
+                if (AssociatedObject.Width < MinWidth)
+                {
+                    CaptureAreaBorder.Margin = new Thickness(0, 0, MinWidth - AssociatedObject.Width, CaptureAreaBorder.Margin.Bottom);
+                    AssociatedObject.Width = MinWidth;
+                }
+
+                CaptureAreaBorder.HorizontalAlignment = HorizontalAlignment.Left;
+
+                var setHeight = new DoubleAnimation(0, BottomBorderHeight, new Duration(TimeSpan.FromMilliseconds(150)), FillBehavior.Stop);
+                setHeight.Completed += (s, e) =>
+                {
+                    ColorAreaBorder.BeginAnimation(FrameworkElement.HeightProperty, null);
+                    ColorAreaBorder.Height = BottomBorderHeight;
+                    setColor();
+                };
+
+                setHeight.EasingFunction = new QuadraticEase() { EasingMode = EasingMode.EaseOut };
+
+                ColorAreaBorder.BeginAnimation(FrameworkElement.HeightProperty, setHeight, HandoffBehavior.Compose);
             }
-            else
+
+            _settingSize = false;
+        }
+
+        private void MouseInfoProvider_MousePositionChanged(object sender, Point mousePosition)
+        {
+            if (_settingSize)
             {
-                CaptureAreaBorder.Width = double.NaN;
-                CaptureAreaBorder.Height = double.NaN;
-                AssociatedObject.SizeToContent = SizeToContent.Manual;
-                AssociatedObject.Width = 0; 
-                AssociatedObject.Height = 0;
-                BottomBorderRow.Height = new GridLength(0);
+                var mousePositionScaled = GetMousePositionScaled(mousePosition);
+
+                var width = Math.Abs(_corner.X - Math.Round(mousePositionScaled.X));
+                var height = Math.Abs(_corner.Y - Math.Round(mousePositionScaled.Y));
+
+                var leftCornerX = _corner.X;
+                var leftCornerY = _corner.Y;
+
+                if (mousePositionScaled.X < _corner.X)
+                {
+                    leftCornerX = mousePositionScaled.X;
+                }
+                if (mousePositionScaled.Y < _corner.Y)
+                {
+                    leftCornerY = mousePositionScaled.Y;
+                }
+
+                WindowHelper.SetPositionAndSize(AssociatedObject, leftCornerX, leftCornerY, width, height);
             }
+        }
+
+        private void ResetCaptureArea()
+        {
+            CaptureAreaBorder.Width = double.NaN;
+            CaptureAreaBorder.Height = double.NaN;
+            AssociatedObject.SizeToContent = SizeToContent.Manual;
+            AssociatedObject.Width = 0;
+            AssociatedObject.Height = 0;
+            BottomBorderRow.Height = new GridLength(0);
         }
 
         private Point GetMousePositionScaled(Point mousePosition)

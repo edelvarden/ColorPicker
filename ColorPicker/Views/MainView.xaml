@@ -15,7 +15,7 @@
                 </Grid.ColumnDefinitions>
 
                 <Border Grid.Column="0" x:Name="ColorBorder" Background="{Binding DisplayedColorBrush}" BorderBrush="{StaticResource BorderColor}" BorderThickness="1" CornerRadius="4" />
-                <TextBlock Grid.Column="1" Margin="8,5,8,8" VerticalAlignment="Center" Foreground="{StaticResource MainForegroundColor}" Text="{Binding ColorString}" FontSize="16" FontWeight="Medium"/>
+                <TextBlock Grid.Column="1" Margin="8,5,8,8" VerticalAlignment="Center" Foreground="{StaticResource MainForegroundColor}" Text="{Binding ColorString}" FontSize="16" FontWeight="SemiBold"/>
             </Grid>
         </Border>
     </Grid>

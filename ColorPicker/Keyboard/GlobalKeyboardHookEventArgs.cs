@@ -6,6 +6,7 @@ namespace ColorPicker.Keyboard
     internal class GlobalKeyboardHookEventArgs : HandledEventArgs
     {
         internal GlobalKeyboardHook.KeyboardState KeyboardState { get; private set; }
+
         internal LowLevelKeyboardInputEvent KeyboardData { get; private set; }
 
         internal GlobalKeyboardHookEventArgs(

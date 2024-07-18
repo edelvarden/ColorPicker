@@ -9,7 +9,7 @@ namespace ColorPicker.Behaviors
 {
     public class SetShortcutBehavior : Behavior<UserControl>
     {
-        private HashSet<Key> monitoredKeys = new HashSet<Key>();
+        private HashSet<Key> MonitoredKeys = new HashSet<Key>();
 
         public bool MonitorKeys
         {
@@ -17,7 +17,7 @@ namespace ColorPicker.Behaviors
             set { SetValue(MonitorKeysProperty, value); }
         }
 
-        public static DependencyProperty MonitorKeysProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty MonitorKeysProperty = DependencyProperty.Register(
             "MonitorKeys", typeof(bool), typeof(SetShortcutBehavior), new PropertyMetadata(false, OnMonitorKeysChanged));
 
         public string ShortCutPreview
@@ -26,7 +26,7 @@ namespace ColorPicker.Behaviors
             set { SetValue(ShortCutPreviewProperty, value); }
         }
 
-        public static DependencyProperty ShortCutPreviewProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty ShortCutPreviewProperty = DependencyProperty.Register(
             "ShortCutPreview", typeof(string), typeof(SetShortcutBehavior));
 
         protected override void OnAttached()
@@ -39,7 +39,10 @@ namespace ColorPicker.Behaviors
         {
             base.OnDetaching();
             AssociatedObject.Loaded -= AssociatedObject_Loaded;
-            AssociatedObject.PreviewKeyDown -= AssociatedObject_PreviewKeyDown;
+            if (MonitorKeys)
+            {
+                AssociatedObject.PreviewKeyDown -= AssociatedObject_PreviewKeyDown;
+            }
         }
 
         private static void OnMonitorKeysChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -72,7 +75,7 @@ namespace ColorPicker.Behaviors
             UpdateMonitoredKeys();
 
             var pressedKeys = new List<string>();
-            foreach (var key in monitoredKeys)
+            foreach (var key in MonitoredKeys)
             {
                 if (System.Windows.Input.Keyboard.IsKeyDown(key))
                 {
@@ -92,21 +95,18 @@ namespace ColorPicker.Behaviors
 
         private void UpdateMonitoredKeys()
         {
-            monitoredKeys.Clear();
-            if (System.Windows.Input.Keyboard.IsKeyDown(Key.LeftShift) || System.Windows.Input.Keyboard.IsKeyDown(Key.RightShift))
+            MonitoredKeys.Clear();
+            AddModifierKeys(Key.LeftShift, Key.RightShift);
+            AddModifierKeys(Key.LeftCtrl, Key.RightCtrl);
+            AddModifierKeys(Key.LeftAlt, Key.RightAlt);
+        }
+
+        private void AddModifierKeys(Key leftKey, Key rightKey)
+        {
+            if (System.Windows.Input.Keyboard.IsKeyDown(leftKey) || System.Windows.Input.Keyboard.IsKeyDown(rightKey))
             {
-                monitoredKeys.Add(Key.LeftShift);
-                monitoredKeys.Add(Key.RightShift);
-            }
-            if (System.Windows.Input.Keyboard.IsKeyDown(Key.LeftCtrl) || System.Windows.Input.Keyboard.IsKeyDown(Key.RightCtrl))
-            {
-                monitoredKeys.Add(Key.LeftCtrl);
-                monitoredKeys.Add(Key.RightCtrl);
-            }
-            if (System.Windows.Input.Keyboard.IsKeyDown(Key.LeftAlt) || System.Windows.Input.Keyboard.IsKeyDown(Key.RightAlt))
-            {
-                monitoredKeys.Add(Key.LeftAlt);
-                monitoredKeys.Add(Key.RightAlt);
+                MonitoredKeys.Add(leftKey);
+                MonitoredKeys.Add(rightKey);
             }
         }
 

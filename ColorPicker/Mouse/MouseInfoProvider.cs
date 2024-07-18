@@ -31,8 +31,13 @@ namespace ColorPicker.Mouse
             _timer.Interval = TimeSpan.FromMilliseconds(MousePullInfoIntervalInMs);
             _timer.Tick += Timer_Tick;
 
-            appStateMonitor.AppShown += AppStateMonitor_AppShown;
-            appStateMonitor.AppClosed += AppStateMonitor_AppClosed;
+            if (appStateMonitor != null)
+            {
+                appStateMonitor.AppShown += AppStateMonitor_AppShown;
+                appStateMonitor.AppClosed += AppStateMonitor_AppClosed;
+                appStateMonitor.AppHidden += AppStateMonitor_AppHidden;
+            }
+
             _mouseHook = new MouseHook();
             _appStateMonitor = appStateMonitor;
             _userSettings = userSettings;
@@ -95,6 +100,11 @@ namespace ColorPicker.Mouse
         }
 
         private void AppStateMonitor_AppClosed(object sender, EventArgs e)
+        {
+            DisposeMouseHook();
+        }
+
+        private void AppStateMonitor_AppHidden(object sender, WindowType e)
         {
             DisposeMouseHook();
         }
