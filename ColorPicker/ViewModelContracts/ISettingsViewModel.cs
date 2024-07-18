@@ -9,8 +9,6 @@ namespace ColorPicker.ViewModelContracts
 
         bool ShowingKeyboardCaptureOverlay { get; set; }
 
-        bool ChangeCursorWhenPickingColor { get; set; }
-
         bool ShowColorName { get; set; }
 
         string ShortCut { get; }
@@ -22,6 +20,8 @@ namespace ColorPicker.ViewModelContracts
         ColorFormat SelectedColorFormat { get; }
 
         ICommand ChangeShortcutCommand { get; }
+
+        ICommand ResetShortcutCommand { get; }
 
         ICommand ConfirmShortcutCommand { get; }
 

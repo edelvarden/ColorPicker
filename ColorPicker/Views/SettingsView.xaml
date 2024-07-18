@@ -53,30 +53,30 @@
                                     <Border x:Name="Border" Width="14" Height="14" BorderBrush="{StaticResource BorderColor}" BorderThickness="1" CornerRadius="1">
                                         <Path x:Name="Checkmark" Stretch="Fill" Width="10" Height="10" Data="M395-285 226-455l50-50 119 118 289-288 50 51-339 339Z" Fill="{StaticResource AccentColor}" />
                                     </Border>
-                                    
+
                                     <!-- Text in Checkbox -->
                                     <Label x:Name="CheckBoxText" Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" TextBlock.Foreground="{StaticResource MainForegroundColor}" TextBlock.FontWeight="Normal" TextBlock.FontSize="12" TextBlock.FontFamily="Tahoma" Padding="6 0 0 1" />
                                 </StackPanel>
                             </BulletDecorator.Bullet>
                         </BulletDecorator>
                         <ControlTemplate.Triggers>
-                                <Trigger Property="IsChecked" Value="True">
+                            <Trigger Property="IsChecked" Value="True">
                                 <Trigger.Setters>
                                     <Setter TargetName="Border" Property="Background" Value="{StaticResource AccentColor}" />
                                     <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource AccentColor}" />
-                                        <Setter TargetName="Border" Property="BorderThickness" Value="2" />
+                                    <Setter TargetName="Border" Property="BorderThickness" Value="2" />
                                     <Setter TargetName="Checkmark" Property="Fill" Value="{StaticResource OnAccentColor}" />
-                                    </Trigger.Setters>
-                                </Trigger>
-                                <Trigger Property="IsChecked" Value="False">
+                                </Trigger.Setters>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="False">
                                 <Trigger.Setters>
                                     <Setter TargetName="Border" Property="Background" Value="{StaticResource SecondaryDarkColor}" />
-                                        <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource BorderColor}" />
-                                        <Setter TargetName="Border" Property="BorderThickness" Value="2" />
-                                        <Setter TargetName="Checkmark" Property="Fill" Value="Transparent" />
-                                    </Trigger.Setters>
-                                </Trigger>
-                            </ControlTemplate.Triggers>
+                                    <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource BorderColor}" />
+                                    <Setter TargetName="Border" Property="BorderThickness" Value="2" />
+                                    <Setter TargetName="Checkmark" Property="Fill" Value="Transparent" />
+                                </Trigger.Setters>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -101,7 +101,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            
+
             <!-- App Icon -->
             <Image Source="pack://application:,,,/ColorPicker;component/Resources/icon.ico" Width="16" Height="16" Grid.Column="0" Margin="12,2,2,0"/>
 
@@ -114,7 +114,7 @@
         <StackPanel Margin="10 40 10 0">
             <CheckBox IsChecked="{Binding RunOnStartup}"  Content="Run on startup" />
             <CheckBox IsChecked="{Binding ShowColorName}"  Content="Show color name" />
-            
+
             <Rectangle Height="2" Fill="{StaticResource BorderColor}" Margin="2 10"/>
             <WrapPanel>
                 <TextBlock VerticalAlignment="Center" Style="{StaticResource NormalTextBlock}" Margin="7" Text="Copied color format:"/>
@@ -127,7 +127,7 @@
                 <TextBlock Style="{StaticResource NormalTextBlock}" Margin="7" Text="{Binding ShortCut}"/>
             </StackPanel>
             <Button Margin="5" Content="Change shortcut" Command="{Binding ChangeShortcutCommand}"/>
-
+            <Button Margin="5" Content="Reset shortcut" Command="{Binding ResetShortcutCommand}"/>
         </StackPanel>
 
         <Border Background="{StaticResource MainDarkColor}" Visibility="{Binding ShowingKeyboardCaptureOverlay, Converter={StaticResource bool2VisibilityConverter}}">

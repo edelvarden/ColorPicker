@@ -26,7 +26,7 @@ namespace ColorPicker.Settings
 
         public SettingItem<string> ActivationShortcut { get; }
 
-        public SettingItem<bool> ChangeCursor { get; }
+        public SettingItem<string> DefaultShortcut { get; }
 
         public SettingItem<bool> ShowColorName { get; }
 

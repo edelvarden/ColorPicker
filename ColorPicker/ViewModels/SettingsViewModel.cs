@@ -28,11 +28,11 @@ namespace ColorPicker.ViewModels
                 ShortCut = ShortCutPreview;
                 ShowingKeyboardCaptureOverlay = false;
             });
-
             CancelShortcutCommand = new RelayCommand(() =>
             {
                 ShowingKeyboardCaptureOverlay = false;
             });
+            ResetShortcutCommand = new RelayCommand(ResetShortcut);
 
             _userSettings = userSettings;
             _userSettings.ActivationShortcut.PropertyChanged += (s, e) => { OnPropertyChanged(nameof(ShortCut)); };
@@ -106,19 +106,6 @@ namespace ColorPicker.ViewModels
             }
         }
 
-        public bool ChangeCursorWhenPickingColor
-        {
-            get
-            {
-                return _userSettings.ChangeCursor.Value;
-            }
-            set
-            {
-                _userSettings.ChangeCursor.Value = value;
-                OnPropertyChanged();
-            }
-        }
-
         public bool ShowColorName
         {
             get
@@ -139,5 +126,17 @@ namespace ColorPicker.ViewModels
         public ICommand ConfirmShortcutCommand { get; }
 
         public ICommand CancelShortcutCommand { get; }
+
+        public ICommand ResetShortcutCommand { get; }
+
+        private void ResetShortcut()
+        {
+            ShortCut = "LWin + C";
+            var currentShortcut = _userSettings.ActivationShortcut.Value;
+            if(currentShortcut != ShortCut)
+            {
+                _userSettings.ActivationShortcut.Value = ShortCut;
+            }    
+        }
     }
 }

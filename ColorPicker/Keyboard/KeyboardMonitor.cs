@@ -15,10 +15,9 @@ namespace ColorPicker.Keyboard
         private readonly AppStateHandler _appStateHandler;
         private readonly IUserSettings _userSettings;
         private readonly ZoomWindowHelper _zoomWindowHelper;
-        private List<string> _previouslyPressedKeys = new List<string>();
-        private List<string> _activationKeys = new List<string>();
+        private HashSet<int> _currentlyPressedKeys = new HashSet<int>();
+        private SortedSet<int> _activationKeys = new SortedSet<int>();
         private GlobalKeyboardHook _keyboardHook;
-        private bool _activationShortcutPressed;
         private int keyboardMoveSpeed;
         private Key lastArrowKeyPressed = Key.None;
 
@@ -47,10 +46,11 @@ namespace ColorPicker.Keyboard
                 var keys = _userSettings.ActivationShortcut.Value.Split('+');
                 foreach (var key in keys)
                 {
-                    _activationKeys.Add(key.Trim());
+                    if (Enum.TryParse(key.Trim(), out Key parsedKey))
+                    {
+                        _activationKeys.Add(KeyInterop.VirtualKeyFromKey(parsedKey));
+                    }
                 }
-
-                _activationKeys.Sort();
             }
         }
 
@@ -61,65 +61,36 @@ namespace ColorPicker.Keyboard
 
         private void Hook_KeyboardPressed(object sender, GlobalKeyboardHookEventArgs e)
         {
-            var currentlyPressedKeys = new List<string>();
             var virtualCode = e.KeyboardData.VirtualCode;
-
-            // ESC pressed
-            if (virtualCode == KeyInterop.VirtualKeyFromKey(Key.Escape) && e.KeyboardState == GlobalKeyboardHook.KeyboardState.KeyDown)
-            {
-                if (_appStateHandler.IsColorPickerVisible())
-                {
-                    _appStateHandler.HideColorPicker();
-                    e.Handled = true;
-                    return;
-                }
-            }
-
-            if (CheckMoveNeeded(virtualCode, Key.Up, e, 0, -1))
-            {
-                e.Handled = true;
-                return;
-            }
-            else if (CheckMoveNeeded(virtualCode, Key.Down, e, 0, 1))
-            {
-                e.Handled = true;
-                return;
-            }
-            else if (CheckMoveNeeded(virtualCode, Key.Left, e, -1, 0))
-            {
-                e.Handled = true;
-                return;
-            }
-            else if (CheckMoveNeeded(virtualCode, Key.Right, e, 1, 0))
-            {
-                e.Handled = true;
-                return;
-            }
-
-            var name = Helper.GetKeyName((uint)virtualCode);
 
             if (e.KeyboardState == GlobalKeyboardHook.KeyboardState.KeyDown || e.KeyboardState == GlobalKeyboardHook.KeyboardState.SysKeyDown)
             {
-                AddModifierKeys(currentlyPressedKeys);
-                currentlyPressedKeys.Add(name);
+                _currentlyPressedKeys.Add(virtualCode);
+            }
+            else if (e.KeyboardState == GlobalKeyboardHook.KeyboardState.KeyUp || e.KeyboardState == GlobalKeyboardHook.KeyboardState.SysKeyUp)
+            {
+                _currentlyPressedKeys.Remove(virtualCode);
             }
 
-            currentlyPressedKeys.Sort();
-
-            if (currentlyPressedKeys.Count == 0 && _previouslyPressedKeys.Count != 0)
+            if (_currentlyPressedKeys.SetEquals(_activationKeys))
             {
-                _activationShortcutPressed = false;
+                _appStateHandler.ShowColorPicker();
             }
 
-            _previouslyPressedKeys = currentlyPressedKeys;
-
-            if (ArraysAreSame(currentlyPressedKeys, _activationKeys))
+            if (_currentlyPressedKeys.Count == 1 && _currentlyPressedKeys.Contains(27))
             {
-                if (!_activationShortcutPressed)
-                {
-                    _activationShortcutPressed = true;
-                    _appStateHandler.ShowColorPicker();
-                }
+                _zoomWindowHelper.CloseZoomWindow();
+                _appStateHandler.HideColorPicker();
+            }
+
+            // Handle other key events
+            if (CheckMoveNeeded(virtualCode, Key.Up, e, 0, -1) ||
+                CheckMoveNeeded(virtualCode, Key.Down, e, 0, 1) ||
+                CheckMoveNeeded(virtualCode, Key.Left, e, -1, 0) ||
+                CheckMoveNeeded(virtualCode, Key.Right, e, 1, 0))
+            {
+                e.Handled = true;
+                return;
             }
         }
 
@@ -150,47 +121,6 @@ namespace ColorPicker.Keyboard
             }
 
             return false;
-        }
-
-        private static bool ArraysAreSame(List<string> first, List<string> second)
-        {
-            if (first.Count != second.Count || (first.Count == 0 && second.Count == 0))
-            {
-                return false;
-            }
-
-            for (int i = 0; i < first.Count; i++)
-            {
-                if (first[i] != second[i])
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        private static void AddModifierKeys(List<string> currentlyPressedKeys)
-        {
-            if ((GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0)
-            {
-                currentlyPressedKeys.Add("Shift");
-            }
-
-            if ((GetAsyncKeyState(VK_CONTROL) & 0x8000) != 0)
-            {
-                currentlyPressedKeys.Add("Ctrl");
-            }
-
-            if ((GetAsyncKeyState(VK_MENU) & 0x8000) != 0)
-            {
-                currentlyPressedKeys.Add("Alt");
-            }
-
-            if ((GetAsyncKeyState(VK_LWIN) & 0x8000) != 0 || (GetAsyncKeyState(VK_RWIN) & 0x8000) != 0)
-            {
-                currentlyPressedKeys.Add("Win");
-            }
         }
 
         protected virtual void Dispose(bool disposing)
