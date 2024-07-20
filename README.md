@@ -1,36 +1,44 @@
-# ColorPicker
-## Windows system-wide color picker
+<h1 align="center">
+<img src="ColorPicker/Resources/icon.ico" width="24" /> ColorPicker
+</h1>
 
-Simple and quick system-wide color picker. Pick colors from any currently running application.
-## Now also part of [**PowerToys**](https://github.com/microsoft/PowerToys)! 
+## Windows System-Wide Color Picker
 
-**To open Color Picker** - (default shortcut) - *Left Ctrl + Break*
+ColorPicker is a simple and efficient system-wide eye-dropper tool. It allows you to pick colors from any currently running application.
 
-**To pick a color** - *Left mouse click* - copies selected color into the clipboard in the selected format (rgb/hex/hsl/hsv)
+**To open Color Picker**, you can use one of the following methods:
 
-**To zoom in** - *Mouse wheel*
+1. Use the shortcut `LWin` + `C` (default).
+2. Left-click on the tray icon.
+3. Select the "Pick Color" option from the tray context menu.
 
-**To open Colors History Palette** - *Right mouse click while Color Picker opened* - holds up to 10 previously copied colors
+**To pick a color**, _left-click_ to copy the selected color to the clipboard in the chosen format.
 
-**To get an average color in a selected area** - *Left and hold mouse click while Color Picker opened* - select the area - color is copied on the left mouse button released
+**To zoom in or out**, use the _mouse wheel_.
 
 [**Download the latest release here**](https://github.com/edelvarden/color-picker/releases/latest)
 
-Currently supported color formats and their string representation:
-- **HEX** - *#292929*
-- **RGB** - *rgb(31,31,31)*
-- **HSL** - *hsl(0, 0%, 12%)* 
-- **HSV** - *hsv(0, 0, 12)*
-- **VEC4** - *vec4(0.122, 0.122, 0.122, 1)*
-- **RGB565** - *#4C8A*
-- **DecimalBE (Big-endian)** - *2114460*
-- **DecimalLE (Little-endian)** - *1213756*
+## Currently Supported Color Formats
 
-## Differences from the implementation in PowerToys
-- different set of supported color formats
-- color meter feature (average color of an area)
-- quick colors history palette
-- different design
-- no telemetry
-- lightweight
+The following color formats are supported along with their example string representations:
 
+- **HEX**: _#292929_
+- **RGB**: _rgb(31, 31, 31)_
+- **HSL**: _hsl(0, 0%, 12%)_
+- **HSV**: _hsv(0, 0, 12)_
+- **HWB**: _hwb(0, 0, 12)_ (newly supported)
+- **VEC4**: _vec4(0.122, 0.122, 0.122, 1)_
+- **RGB565**: _#4C8A_
+- **Decimal BE (Big-endian)**: _2114460_
+- **Decimal LE (Little-endian)**: _1213756_
+- **LAB**: _lab(18, -6, -18)_ (newly supported)
+- **XYZ**: _xyz(29, 12, 9)_ (newly supported)
+
+## Differences
+
+This is a fork of the [martinchrzan/ColorPicker](https://github.com/martinchrzan/ColorPicker) with several improvements and simplifications in the app design. The main differences are:
+
+- **Functionality**: Retains only the color picking functionality.
+- **Lightweight**: Removed unnecessary dependencies, reducing the program size from ~9MB to less than 1MB.
+- **Portability**: No installers needed; can run as a standalone executable file.
+- **Updates**: Applied fixes and improvements from the [**PowerToys**](https://github.com/microsoft/PowerToys) variant.
