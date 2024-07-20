@@ -12,24 +12,28 @@ namespace ColorPicker.Helpers
             {
                 case ColorFormat.hex:
                     return ColorToHex(c);
-                case ColorFormat.hsl:
-                    return ColorToHsl(c);
-                case ColorFormat.hsv:
-                    return ColorToHsv(c);
                 case ColorFormat.rgb:
                     return ColorToRgb(c);
+                case ColorFormat.hsl:
+                    return ColorToHsl(c);
+                case ColorFormat.hwb:
+                    return ColorToHwb(c);
+                case ColorFormat.hsv:
+                    return ColorToHsv(c);
+                case ColorFormat.lab:
+                    return ColorToLab(c);
+                case ColorFormat.xyz:
+                    return ColorToXyzString(c);
                 case ColorFormat.vec4:
                     return ColorToVec4(c);
+                case ColorFormat.cmyk:
+                    return ColorToCmyk(c);
                 case ColorFormat.rgb565:
                     return ColorToRgb565(c);
                 case ColorFormat.decimalLE:
                     return ColorToDecimal(c, true);
                 case ColorFormat.decimalBE:
                     return ColorToDecimal(c, false);
-                case ColorFormat.cmyk:
-                    return ColorToCmyk(c);
-                case ColorFormat.lab:
-                    return ColorToLab(c);
                 default:
                     return string.Empty;
             }
@@ -169,25 +173,50 @@ namespace ColorPicker.Helpers
             return $"cmyk({cyan}%, {magenta}%, {yellow}%, {k}%)";
         }
 
-        private static string ColorToLab(Color c)
+        private static (double x, double y, double z) ColorToXyz(Color c)
         {
             double r = c.R / 255.0;
             double g = c.G / 255.0;
-            double blue = c.B / 255.0;
+            double b = c.B / 255.0;
 
-            // Convert to XYZ color space
+            // Convert to linear RGB
             r = (r > 0.04045) ? Math.Pow((r + 0.055) / 1.055, 2.4) : r / 12.92;
             g = (g > 0.04045) ? Math.Pow((g + 0.055) / 1.055, 2.4) : g / 12.92;
-            blue = (blue > 0.04045) ? Math.Pow((blue + 0.055) / 1.055, 2.4) : blue / 12.92;
+            b = (b > 0.04045) ? Math.Pow((b + 0.055) / 1.055, 2.4) : b / 12.92;
 
-            double x = r * 0.4124 + g * 0.3576 + blue * 0.1805;
-            double y = r * 0.2126 + g * 0.7152 + blue * 0.0722;
-            double z = r * 0.0193 + g * 0.1192 + blue * 0.9505;
+            // Convert to XYZ
+            double x = r * 0.4124564 + g * 0.3575761 + b * 0.1804375;
+            double y = r * 0.2126729 + g * 0.7151522 + b * 0.0721750;
+            double z = r * 0.0193339 + g * 0.1191920 + b * 0.9503041;
 
+            // Normalize for D65 illuminant
             x /= 0.95047;
             y /= 1.00000;
             z /= 1.08883;
 
+            x = Math.Round(x * 100);
+            y = Math.Round(y * 100);
+            z = Math.Round(z * 100);
+
+            return (x, y, z);
+        }
+
+        private static string ColorToXyzString(Color c)
+        {
+            var (x, y, z) = ColorToXyz(c);
+            return $"xyz({x}, {y}, {z})";
+        }
+
+        private static string ColorToLab(Color c)
+        {
+            // Use ColorToXyz to get XYZ values
+            var (x, y, z) = ColorToXyz(c);
+
+            x = x / 100.0;
+            y = y / 100.0;
+            z = z / 100.0;
+
+            // Convert XYZ to Lab
             x = (x > 0.008856) ? Math.Pow(x, 1.0 / 3) : (7.787 * x) + (16.0 / 116);
             y = (y > 0.008856) ? Math.Pow(y, 1.0 / 3) : (7.787 * y) + (16.0 / 116);
             z = (z > 0.008856) ? Math.Pow(z, 1.0 / 3) : (7.787 * z) + (16.0 / 116);
@@ -201,6 +230,44 @@ namespace ColorPicker.Helpers
             b = Math.Round(b);
 
             return $"lab({l}, {a}, {b})";
+        }
+
+        private static string ColorToHwb(Color c)
+        {
+            double r = c.R / 255.0;
+            double g = c.G / 255.0;
+            double b = c.B / 255.0;
+
+            double max = Math.Max(r, Math.Max(g, b));
+            double min = Math.Min(r, Math.Min(g, b));
+            double delta = max - min;
+
+            double h = 0;
+            if (delta != 0)
+            {
+                if (max == r)
+                {
+                    h = (g - b) / delta + (g < b ? 6 : 0);
+                }
+                else if (max == g)
+                {
+                    h = (b - r) / delta + 2;
+                }
+                else
+                {
+                    h = (r - g) / delta + 4;
+                }
+                h /= 6;
+            }
+
+            double w = min;
+            double b_value = 1 - max;
+
+            h = Math.Round(h * 360);
+            w = Math.Round(w * 100);
+            b_value = Math.Round(b_value * 100);
+
+            return $"hwb({h}, {w}%, {b_value}%)";
         }
     }
 }
