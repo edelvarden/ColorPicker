@@ -49,8 +49,11 @@ jobs:
         $versionMatch = [regex]::Match($assemblyInfoContent, $versionPattern)
         $assemblyVersion = $versionMatch.Groups[1].Value
 
-        $VERSION = $assemblyVersion
-        echo "VERSION=$VERSION" | Out-File -FilePath $env:GITHUB_ENV -Append
+        # Get only the first three segments (major, minor, patch)
+        $versionSegments = $assemblyVersion -split '\.'
+        $shortVersion = "$($versionSegments[0]).$($versionSegments[1]).$($versionSegments[2])"
+
+        echo "VERSION=$shortVersion" | Out-File -FilePath $env:GITHUB_ENV -Append
 
     - name: Create version tag
       shell: pwsh
