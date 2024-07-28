@@ -39,7 +39,6 @@ namespace ColorPicker.Keyboard
         {
             if (disposing)
             {
-                // because we can unhook only in the same thread, not in garbage collector thread
                 if (_windowsHookHandle != IntPtr.Zero)
                 {
                     if (!UnhookWindowsHookEx(_windowsHookHandle))
@@ -49,22 +48,20 @@ namespace ColorPicker.Keyboard
                     }
 
                     _windowsHookHandle = IntPtr.Zero;
-
-                    // ReSharper disable once DelegateSubtraction
-                    _hookProc -= LowLevelKeyboardProc;
                 }
-            }
 
-            if (_user32LibraryHandle != IntPtr.Zero)
-            {
-                // reduces reference to library by 1.
-                if (!FreeLibrary(_user32LibraryHandle))
+                if (_user32LibraryHandle != IntPtr.Zero)
                 {
-                    int errorCode = Marshal.GetLastWin32Error();
-                    throw new Win32Exception(errorCode, $"Failed to unload library 'User32.dll'. Error {errorCode}: {new Win32Exception(Marshal.GetLastWin32Error()).Message}.");
+                    if (!FreeLibrary(_user32LibraryHandle))
+                    {
+                        int errorCode = Marshal.GetLastWin32Error();
+                        throw new Win32Exception(errorCode, $"Failed to unload library 'User32.dll'. Error {errorCode}: {new Win32Exception(Marshal.GetLastWin32Error()).Message}.");
+                    }
+
+                    _user32LibraryHandle = IntPtr.Zero;
                 }
 
-                _user32LibraryHandle = IntPtr.Zero;
+                _hookProc -= LowLevelKeyboardProc;
             }
         }
 
@@ -91,18 +88,20 @@ namespace ColorPicker.Keyboard
         {
             bool fEatKeyStroke = false;
 
-            var wparamTyped = wParam.ToInt32();
-            if (Enum.IsDefined(typeof(KeyboardState), wparamTyped))
+            if (nCode >= 0)
             {
-                object o = Marshal.PtrToStructure(lParam, typeof(LowLevelKeyboardInputEvent));
-                LowLevelKeyboardInputEvent p = (LowLevelKeyboardInputEvent)o;
+                var wparamTyped = wParam.ToInt32();
+                if (Enum.IsDefined(typeof(KeyboardState), wparamTyped))
+                {
+                    LowLevelKeyboardInputEvent p = Marshal.PtrToStructure<LowLevelKeyboardInputEvent>(lParam);
 
-                var eventArguments = new GlobalKeyboardHookEventArgs(p, (KeyboardState)wparamTyped);
+                    var eventArguments = new GlobalKeyboardHookEventArgs(p, (KeyboardState)wparamTyped);
 
-                EventHandler<GlobalKeyboardHookEventArgs> handler = KeyboardPressed;
-                handler?.Invoke(this, eventArguments);
+                    EventHandler<GlobalKeyboardHookEventArgs> handler = KeyboardPressed;
+                    handler?.Invoke(this, eventArguments);
 
-                fEatKeyStroke = eventArguments.Handled;
+                    fEatKeyStroke = eventArguments.Handled;
+                }
             }
 
             return fEatKeyStroke ? (IntPtr)1 : CallNextHookEx(IntPtr.Zero, nCode, wParam, lParam);

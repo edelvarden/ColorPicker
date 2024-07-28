@@ -115,8 +115,9 @@ namespace ColorPicker.Keyboard
                 }
                 else if (e.KeyboardState == GlobalKeyboardHook.KeyboardState.KeyUp)
                 {
-                    lastArrowKeyPressed = Key.None;
                     keyboardMoveSpeed = 0;
+                    lastArrowKeyPressed = Key.None;
+                    return true;
                 }
             }
 
@@ -125,7 +126,11 @@ namespace ColorPicker.Keyboard
 
         protected virtual void Dispose(bool disposing)
         {
-            _keyboardHook?.Dispose();
+            if (disposing)
+            {
+                _keyboardHook?.Dispose();
+                _userSettings.ActivationShortcut.PropertyChanged -= ActivationShortcut_PropertyChanged;
+            }
         }
 
         public void Dispose()
